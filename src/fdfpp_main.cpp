@@ -15,9 +15,10 @@
 
 int main(int argc, char* argv[])
 {
+  char fdf_fname[] = "test_cpp.fdf";
   std::cout << "Hello from C++." << std::endl;
-  // create a new fdf file and fill it with something.
-  FILE* myfdf = fdf_open_write("test_cpp.fdf", 0);
+    // create a new fdf file and fill it with something.
+  FILE* myfdf = fdf_open_write(fdf_fname, 0);
   fdf_close(myfdf);
   
   return EXIT_SUCCESS;
