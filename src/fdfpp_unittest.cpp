@@ -27,30 +27,61 @@ protected:
     tmpnam(buffer);
     stringstream fdf_tmp;
     fdf_tmp << buffer;
-    string fdf_out_file = fdf_tmp.str() + "fdf";
+    string fdf_out_file = fdf_tmp.str() + ".fdf";
 
     // create the fdf file with our fdfpp C++ wrapper
     FdfPP myFdfPP;
-    //    myFdfPP.openWrite(const_cast <char *>(fdf_out_file.c_str()),0);
-    myFdfPP.openWrite("unittest_fdf.fdf",0);
+    myFdfPP.openWrite(const_cast <char *>(fdf_out_file.c_str()),0);
+    //    myFdfPP.openWrite("unittest_fdf.fdf",0);
     myFdfPP.close();
 
     // open the file; delete if it exists
-    //    ifstream test_file(const_cast <char *>(fdf_out_file.c_str()));
-    ifstream test_file("unittest_fdf.fdf");
+    ifstream test_file(const_cast <char *>(fdf_out_file.c_str()));
+    //ifstream test_file("unittest_fdf.fdf");
     cout << "test_file.good(): " << test_file.good() << endl;
     if (test_file.good())
       {
 	cout << "found file." << endl;
 	file_exists = true;
 	test_file.close();
-	//	remove(fdf_out_file.c_str());
-	remove("unittest_fdf.fdf");
+	remove(fdf_out_file.c_str());
       }
     
     return(file_exists);
   }
-  
+
+
+  bool fdfppWriteReadFloat(void)
+  {
+    bool read_write_status = false;
+    // create a random name for our fdf file
+    char buffer [L_tmpnam];
+    tmpnam(buffer);
+    stringstream fdf_tmp;
+    fdf_tmp << buffer;
+    string fdf_out_file = fdf_tmp.str() + ".fdf";
+
+    // create the fdf file with our fdfpp C++ wrapper
+    FdfPP myFdfPP;
+    myFdfPP.openWrite(const_cast <char *>(fdf_out_file.c_str()),0);
+    cout << "file name: " << fdf_out_file << endl;
+    //    myFdfPP.openWrite("unittest_fdf.fdf",0);
+
+    // add float values to fdf file
+    
+
+    // close the file
+    myFdfPP.close();
+    
+    // re-open the fdf file,
+    // read the data value
+    // close the file
+    // compare the data and change read_write_status to 'true' if equal
+    read_write_status = true;
+    return(read_write_status);
+  }
+
+    
   virtual void SetUp(){
     // Code here will be called immediately after constructor (right 
     // before each test).
@@ -85,7 +116,14 @@ TEST_F(fdfppClassTest, fdfpp_make_file)
 {
   // test the ability to create a .fdf file
   EXPECT_TRUE(fdfppCreateFile());
-  }
+}
+
+TEST_F(fdfppClassTest, fdfpp_read_write)
+{
+  // test the ability to create a .fdf file,
+  // write data, read float data
+  EXPECT_TRUE(fdfppWriteReadFloat());
+}
 
 
 int main(int argc, char* argv[])
