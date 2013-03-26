@@ -13,6 +13,8 @@
 FdfPP::FdfPP()
 {
   // FdfPP constructor
+  // initialize err
+  err = 0;
 }
 
 FdfPP::~FdfPP()

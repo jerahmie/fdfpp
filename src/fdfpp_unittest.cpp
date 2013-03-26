@@ -55,21 +55,62 @@ protected:
   {
     bool read_write_status = false;
     // create a random name for our fdf file
-    char buffer [L_tmpnam];
-    tmpnam(buffer);
-    stringstream fdf_tmp;
-    fdf_tmp << buffer;
-    string fdf_out_file = fdf_tmp.str() + ".fdf";
-
+    string fdf_file_name = "unittest_fdf.fdf";
     // create the fdf file with our fdfpp C++ wrapper
     FdfPP myFdfPP;
-    myFdfPP.openWrite(const_cast <char *>(fdf_out_file.c_str()),0);
-    cout << "file name: " << fdf_out_file << endl;
-    //    myFdfPP.openWrite("unittest_fdf.fdf",0);
 
-    // add float values to fdf file
+    myFdfPP.openWrite(fdf_file_name,0);
     
+    // add float values to fdf file
+    // filetype fdf item
+    int dim0 = 0;
+    int dim1 = 1;
+    int dim2 = 2;
+    int dim3 = 3;
+    const int *pdim0 = &dim0;
+    const int *pdim1 = &dim1;
+    const int *pdim2 = &dim2;
+    const int *pdim3 = &dim3;    
+    int append1 = 0;
+    char *pfiletype = "filetype";
+    char *pheader = "header";
+    char *pzcv = "zcv";
+    char *pvpc = "vpc";
+    char *pt0 = "t0";
+    char *pdt = "dt";
+    char *pnbits = "nbits";
+    char *punits = "units";
+    char *pdata = "data";
+    long ndims0 = 0;
+    long ndims1 = 1;
+    long ndims2 = 2;
+    long ndims3 = 3;
+    char *pfiletype = "t0dt_scaled";
+    char *pheader = "test of write floats with fdfpp C++ wrapper.";
+    long write_item_status = 0;
+    write_item_status = myFdfPP.writeItem(append1,
+					  pfiletype,
+					  ndims1,
+					  pdim1,
+					  fdf_char,
+					  (void*)filetype);
+    cout << "fdf write status: " << write_item_status << endl;
+    write_item_status = myFdfPP.writeItem(append1,
+					  pheader,
+					  ndims1,
+					  pdim1,
+					  fdf_char,
+					  (void*)header);
+    write_item_status = myFdfPP.writeItem(append1,
+					  pzcv,
+					  ndims1,
+					  pdim1,
+					  fdf_char,
+					  (void*));
+    write_item_status = myFdPP
+    cout << "fdf write status: " << write_item_status << endl;    
 
+    
     // close the file
     myFdfPP.close();
     
@@ -77,7 +118,7 @@ protected:
     // read the data value
     // close the file
     // compare the data and change read_write_status to 'true' if equal
-    read_write_status = true;
+    //read_write_status = true;
     return(read_write_status);
   }
 
