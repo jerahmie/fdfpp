@@ -13,6 +13,7 @@
 #endif
 
 #include <stdio.h>
+#include <string.h>
 #include "fdf.h"
 
 PREAMBLE(dllexport) void fdf_close( FILE* fp){
