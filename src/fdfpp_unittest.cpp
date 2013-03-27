@@ -5,11 +5,17 @@
 // created by Jerahmie W. Radder, 22Mar2013
 //
 
+
+#define MAX_DATA 1024
+#define _USE_MATH_DEFINES
+
 #include <cstdio>
 #include <iostream>
+#include <cmath>
 #include <fstream>
 #include "fdfpp.h"
 #include "gtest/gtest.h"
+
 
 
 using namespace std;
@@ -66,12 +72,13 @@ protected:
     int dim0 = 0;
     int dim1 = 1;
     int dim2 = 2;
-    int dim3 = 3;
+    int dim64 = FDF_ITEMNAME_LENGTH;
     const int *pdim0 = &dim0;
     const int *pdim1 = &dim1;
     const int *pdim2 = &dim2;
-    const int *pdim3 = &dim3;    
-    int append1 = 0;
+    const int *pdim64 = &dim64;    
+    int append0 = 0;
+    int append1 = 1;
     char *pfiletype = "filetype";
     char *pheader = "header";
     char *pzcv = "zcv";
@@ -85,29 +92,71 @@ protected:
     long ndims1 = 1;
     long ndims2 = 2;
     long ndims3 = 3;
-    char *pfiletype = "t0dt_scaled";
-    char *pheader = "test of write floats with fdfpp C++ wrapper.";
+    char *filetype = "t0dt_scaled";
+    char *header = "test of write floats with fdfpp CXX wrapper.";
+    double zcv = 0.0;
+    double vpc = 1.0;
+    double t0 = 0.0;
+    double dt = 0.001;
+    int nbits = 64;
+    char *units = "volts";
+    double data[MAX_DATA];
+    const double f0 = 10.0e6;
+    const double delta_t = 0.001;
+    for (int indx=0; indx < MAX_DATA; indx++)
+      data[indx] = 10.0*sin(2.0 * M_PI * f0 * delta_t * indx);
+    
     long write_item_status = 0;
-    write_item_status = myFdfPP.writeItem(append1,
+    write_item_status = myFdfPP.writeItem(append0,
 					  pfiletype,
 					  ndims1,
-					  pdim1,
+					  pdim64,
 					  fdf_char,
 					  (void*)filetype);
     cout << "fdf write status: " << write_item_status << endl;
     write_item_status = myFdfPP.writeItem(append1,
 					  pheader,
 					  ndims1,
-					  pdim1,
+					  pdim64,
 					  fdf_char,
 					  (void*)header);
     write_item_status = myFdfPP.writeItem(append1,
 					  pzcv,
 					  ndims1,
-					  pdim1,
+					  pdim64,
+					  fdf_double,
+					  (void*)&zcv);
+    write_item_status = myFdfPP.writeItem(append1,
+					 pvpc,
+					 ndims1,
+					 pdim64,
+					 fdf_double,
+					 (void*)&vpc);
+    write_item_status = myFdfPP.writeItem(append1,
+					  pt0,
+					  ndims1,
+					  pdim64,
+					  fdf_double,
+					  (void*)&t0);
+    write_item_status = myFdfPP.writeItem(append1,
+					  pdt,
+					  ndims1,
+					  pdim64,
+					  fdf_double,
+					  (void*)&dt);
+    write_item_status = myFdfPP.writeItem(append1,
+					  pnbits,
+					  ndims1,
+					  pdim64,
+					  fdf_i32,
+					  (void*)&nbits);
+    write_item_status = myFdfPP.writeItem(append1,
+					  punits,
+					  strlen(units),
+					  pdim64,
 					  fdf_char,
-					  (void*));
-    write_item_status = myFdPP
+					  (void*)units);
+    
     cout << "fdf write status: " << write_item_status << endl;    
 
     
