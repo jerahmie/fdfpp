@@ -87,6 +87,14 @@ long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
   return(fdf_write_status);
 }
 
+long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
+		      long type, void *data)
+{
+  long fdf_write_status = fdf_write_item(fp, append, name,
+					 ndims, dims, type, data, err);
+  return(fdf_write_status);
+}
+long FdfPP::writeItem(long append, const std::string &name, )
 long FdfPP::seekItem(long *item, char *name, long *ndims, int *dims,
 		     long *type, long *nbytes)
 {

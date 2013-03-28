@@ -75,58 +75,20 @@ protected:
     
     // add float values to fdf file
     // filetype fdf item
-    int dim0 = 0;
-    int dim1 = 1;
-    int dim2 = 2;
-    int dim64 = FDF_ITEMNAME_LENGTH;
-    int dim_data = DATA_POINTS;
-    const int *pdim0 = &dim0;
-    const int *pdim1 = &dim1;
-    const int *pdim2 = &dim2;
-    const int *pdim64 = &dim64;
-    const int *pdimDATA = &dim_data;
-    long append0 = 0;
-    long append1 = 1;
-    char *pfiletype = "filetype";
-    char *pheader = "header";
-    char *pvpc = "vpc";
-    char *pzcv = "zcv";
-    char *pt0 = "t0";
-    char *pdt = "dt";
-    char *pnbits = "nbits";
-    char *punits = "units";
-    char *pdata = "data";
-    long ndims0 = 0;
-    long ndims1 = 1;
-    long ndims2 = 2;
-    long ndims3 = 3;
-    char *filetype = "t0dt_scaled";
-    int file_type_len = strlen(filetype);
-    const int *pfile_type_len = &file_type_len;
-    char *header = "test of write floats with fdfpp CXX wrapper.";
-    int header_len = strlen(header);
-    const int *pheader_len = &header_len;
-    double zcv = 0.0;
-    double vpc = 1.0;
-    double t0 = 0.0;
-    double dt = 0.001;
-    long nbits = 64;
-    char *units = "volts";
-    int unit_len= strlen(units);
-    const int *punit_len = &unit_len;
-    double data[DATA_POINTS];
-    const double f0 = 10.0e6;
-    const double delta_t = 0.001;
-    for (int indx=0; indx < DATA_POINTS; indx++)
-      data[indx] = 10.0*sin(2.0 * M_PI * f0 * delta_t * indx);
+    long dim0, dim1, dim2, dim64, dim_data;
+    long *pdim0, *pdim1, *pdim2, *pdim64, *pdimDATA;
+    char fdfname[FDF_ITEMNAME_LENGTH];
+    char filetype[FDF_ITEMNAME_LENGTH];
+    const char* fdfname_str = "filetype";
+    const char* filetype_str = "t0dt_scaled";
+    memset(&fdfname, 0, FDF_ITEMNAME_LENGTH);
+    memset(&filetype, 0, FDF_ITEMNAME_LENGTH);
+    memcpy(&fdfname, fdfname_str, strlen(fdfname_str));
+    memcpy(&filetype, filetype_str, strlen(filetype_str));
+    write_item_status = myFdfPP.header();
+    write_item_status = myFdfPP.writeData(append0, "data", (void*)data);
     
-    long write_item_status = 0;
-    write_item_status = myFdfPP.writeItem(append0,
-					  pfiletype,
-					  ndims1,
-					  pfile_type_len,
-					  fdf_char,
-					  (void*)filetype);
+					  
 //    write_item_status = myFdfPP.writeItem(append1,
 //					  pheader,
 //					  ndims1,

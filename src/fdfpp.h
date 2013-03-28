@@ -16,6 +16,9 @@
 #include <string>
 #include "fdf.h"
 
+
+typdef enum fdf_file_type_tag{ fdf_t0dt_scaled, cp_info} fdf_file_type;
+
 class FdfPP
 {
  public:
@@ -34,6 +37,8 @@ class FdfPP
   long readData(long, void*);
 //long seekEnd(long *nitems);
   long writeItem(long, char*, long, const int*, long, void*);
+  //  long writeItem(long, const std::string &name, 
+  //		 const std::vector &vdims, long, void*);
   long seekItem(long*, char*, long*, int*, long*, long*);
   long isLink(char*, long*);
 //  long dataLength(long, const int*, long);
@@ -45,6 +50,8 @@ class FdfPP
 private:
 FILE* fp;
 long err;
+fdf_file_type fdfpp_file_type;
+
 };
 
 #endif // FDFPP_H_
