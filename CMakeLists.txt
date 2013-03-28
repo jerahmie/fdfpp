@@ -129,6 +129,12 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
      endif(CMAKE_GENERATOR STREQUAL "Visual Studio 10")
     endif(NOT WITH_SHARED_LIBS)
   endif(CMAKE_CXX_COMPILER MATCHES cl)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  # GNU GCC settings
+  set(CMAKE_C_FLAGS "-O2")
+  set(CMAKE_CXX_FLAGS "-O2")
+  set(CMAKE_C_FLAGS_DEBUG "-g")
+  set(CMAKE_CXX_FLAGS_DEBUG "-g")
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 ############################################################
