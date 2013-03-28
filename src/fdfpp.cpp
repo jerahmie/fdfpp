@@ -28,6 +28,15 @@ FdfPP::~FdfPP()
 // Assignment Operator
 // FdfPP & FdfPP::operator=(const FdfPP &other){}
 
+// Constructor with initialization
+//FdfPP FdfPP::FdfPP(fdfpp_file_type, const std::string &header, double,
+//  		double, double, double, int, const std::string &units,
+//              const std::vector<int> &dims)
+//{
+//  
+//}
+
+  
 // fdf functions
 void FdfPP::open(char *fname)
 {
@@ -86,6 +95,20 @@ long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
 					 ndims, dims, type, data, err);
   return(fdf_write_status);
 }
+
+
+
+long FdfPP::preamble(fdfpp_file_type ft, const std::string &header,
+		     double zcv, double vpc, double t0, double dt,
+		     int nbits, const std::string &units,
+		     const std::vector<int> &dims)
+{
+
+}
+// long FdfPP::writeData(long fdf_type, void* data)
+// {
+// // check for valid header, write header, then write data
+// }
 
 long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
 		      long type, void *data)

@@ -35,10 +35,13 @@ class FdfPP
   void openWrite(char* fname, long append);
   void openWrite(const std::string &fname, long append);
   long readData(long, void*);
+  long preamble(fdfpp_file_type, const std::string &header,
+		double, double, double, double,
+		int, const std::string &units,
+		const std::vector<int> &dims);
 //long seekEnd(long *nitems);
   long writeItem(long, char*, long, const int*, long, void*);
-  //  long writeItem(long, const std::string &name, 
-  //		 const std::vector &vdims, long, void*);
+  long writeData(long, void*);
   long seekItem(long*, char*, long*, int*, long*, long*);
   long isLink(char*, long*);
 //  long dataLength(long, const int*, long);
@@ -48,10 +51,13 @@ class FdfPP
 //  long fwriteErr();
 
 private:
-FILE* fp;
-long err;
-fdf_file_type fdfpp_file_type;
-
+  long writeHeader(void);
+  FILE* fp_;
+  long err_;
+  fdf_file_type fdfpp_file_type_;    // 't0dt_scaled' or 'cp_info'
+  std::string  header_, units_;
+  double zxv_, vpc_, t0_, dt_;
+  int nbits_;
 };
 
 #endif // FDFPP_H_
