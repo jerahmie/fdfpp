@@ -29,12 +29,20 @@ FdfPP::~FdfPP()
 // FdfPP & FdfPP::operator=(const FdfPP &other){}
 
 // Constructor with initialization
-//FdfPP FdfPP::FdfPP(fdfpp_file_type, const std::string &header, double,
-//  		double, double, double, int, const std::string &units,
-//              const std::vector<int> &dims)
-//{
-//  
-//}
+FdfPP::FdfPP(fdfpp_file_type ft, const std::string &header, double zcv,
+             double vpc, double t0, double dt, int nbits,
+             const std::string &units, const std::vector<int> &dims)
+{
+  fdfpp_file_type_ = ft;
+  header_ = header;
+  zcv_ = zcv;
+  vpc_ = vpc;
+  t0_ = t0;
+  dt_ = dt;
+  nbits_ = nbits;
+  units_ = units;
+  dims_ = dims;  
+}
 
   
 // fdf functions
@@ -89,20 +97,34 @@ long FdfPP::readData(long nbytes, void *data)
 //}
 
 long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
-		      long type, void *data)
+                      long type, void *data)
 {
   long fdf_write_status = fdf_write_item(fp, append, name,
-					 ndims, dims, type, data, err);
+                                         ndims, dims, type, data, err);
   return(fdf_write_status);
 }
 
 
 
 long FdfPP::preamble(fdfpp_file_type ft, const std::string &header,
-		     double zcv, double vpc, double t0, double dt,
-		     int nbits, const std::string &units,
-		     const std::vector<int> &dims)
+                     double zcv, double vpc, double t0, double dt,
+                     int nbits, const std::string &units,
+                     const std::vector<int> &dims)
 {
+  fdfpp_file_type_ = ft;
+  header_ = header;
+  zcv_ = zcv;
+  vpc_ = vpc;
+  t0_ = t0;
+  dt_ = dt;
+  nbits_ = nbits;
+  units_ = units;
+  dims_ = dims;
+}
+
+long FdfPP::writeHeader(void)
+{
+  // todo: finish write header imp
 
 }
 // long FdfPP::writeData(long fdf_type, void* data)
@@ -110,19 +132,21 @@ long FdfPP::preamble(fdfpp_file_type ft, const std::string &header,
 // // check for valid header, write header, then write data
 // }
 
+
+
 long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
-		      long type, void *data)
+                      long type, void *data)
 {
   long fdf_write_status = fdf_write_item(fp, append, name,
-					 ndims, dims, type, data, err);
+                                         ndims, dims, type, data, err);
   return(fdf_write_status);
 }
 long FdfPP::writeItem(long append, const std::string &name, )
 long FdfPP::seekItem(long *item, char *name, long *ndims, int *dims,
-		     long *type, long *nbytes)
+                     long *type, long *nbytes)
 {
   long fdf_seek_item_status = fdf_seek_item(fp, item, name,
-					    ndims, dims, type, nbytes,err);
+                                            ndims, dims, type, nbytes,err);
     return(fdf_seek_item_status);
 }
 
@@ -141,7 +165,7 @@ long FdfPP::isLink(char *fname, long *islink)
 //long FdfPP::readPreamble(char* name, long *ndims, int *dims, long *type)
 //{
 //  long fdf_read_preamble_status = fdf_read_preamble(fp, name, ndims,
-//						    dims, type, err);
+//                                                  dims, type, err);
 //  return(fdf_read_preamble_status);
 //  
 //}
