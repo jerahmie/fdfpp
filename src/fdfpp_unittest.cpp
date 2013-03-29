@@ -150,8 +150,6 @@ protected:
 //					  fdf_double,
 //					  (void*)data);
 //    
-
-    
     // close the file
     myFdfPP.close();
     

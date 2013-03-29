@@ -147,14 +147,17 @@ void FdfPP::t0(double t0)
 void FdfPP::dt(double dt)
 {
   /// set dt, the sample interval
-  dt_ = dt;
+  // this should be positive double value, greater than 0.0
+  if (dt > 0.0)
+    dt_ = dt;
 }
 
 void FdfPP::nbits(int nbits)
 {
   /// set the number of significant bits in the data.  for NI digitizers: 12
   /// for Innovative Integration X3-10M: 16
-  nbits_ = nbits;
+  if ( nbits > 0 )
+    nbits_ = nbits;
 }
 
 void FdfPP::dims(const std::vector<int> &dims)
@@ -175,8 +178,10 @@ void FdfPP::preamble(fdfpp_file_type ft, const std::string &header,
   zcv_ = zcv;
   vpc_ = vpc;
   t0_ = t0;
-  dt_ = dt;
-  nbits_ = nbits;
+  if ( dt > 0.0 )
+    dt_ = dt;
+  if ( nbits > 0 )
+    nbits_ = nbits;
   units_ = units;
   dims_ = dims;
 }
