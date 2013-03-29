@@ -57,7 +57,7 @@ protected:
   }
 
 
-  bool fdfppWriteReadFloat(void)
+  bool fdfppWriteReadFlost(void)
   {
     bool read_write_status = false;
     // create a random name for our fdf file
@@ -75,18 +75,30 @@ protected:
     
     // add float values to fdf file
     // filetype fdf item
-    long dim0, dim1, dim2, dim64, dim_data;
+    long dim0, dim1, dim2, dim64, dim_data, write_item_status;
     long *pdim0, *pdim1, *pdim2, *pdim64, *pdimDATA;
     char fdfname[FDF_ITEMNAME_LENGTH];
     char filetype[FDF_ITEMNAME_LENGTH];
-    const char* fdfname_str = "filetype";
-    const char* filetype_str = "t0dt_scaled";
-    memset(&fdfname, 0, FDF_ITEMNAME_LENGTH);
-    memset(&filetype, 0, FDF_ITEMNAME_LENGTH);
-    memcpy(&fdfname, fdfname_str, strlen(fdfname_str));
-    memcpy(&filetype, filetype_str, strlen(filetype_str));
-    write_item_status = myFdfPP.header();
-    write_item_status = myFdfPP.writeData(append0, "data", (void*)data);
+
+    //const char* fdfname_str = "filetype";
+    //const char* filetype_str = "t0dt_scaled";
+    //    memset(&fdfname, 0, FDF_ITEMNAME_LENGTH);
+    //    memset(&filetype, 0, FDF_ITEMNAME_LENGTH);
+    //    memcpy(&fdfname, fdfname_str, strlen(fdfname_str));
+    //    memcpy(&filetype, filetype_str, strlen(filetype_str));
+
+
+//    write_item_status = myFdfPP.preamble( fdf_t0dt_scaled,
+//                                          test_header,
+//                                          zcv,
+//                                          vpc,
+//                                          t0,
+//                                          dt,
+//                                          nbits,
+//                                          units,
+//                                          test_dims
+//                                          );
+    //    write_item_status = myFdfPP.writeData(append0, "data", (void*)data);
     
 					  
 //    write_item_status = myFdfPP.writeItem(append1,
@@ -188,11 +200,60 @@ TEST_F(fdfppClassTest, fdfpp_make_file)
   EXPECT_TRUE(fdfppCreateFile());
 }
 
-TEST_F(fdfppClassTest, fdfpp_read_write)
+TEST_F(fdfppClassTest, fdfpp_setters_and_getters)
+{
+  // test the setter and getter functions
+  double zcv = 0.0;
+  double vpc = 1.0;
+  double t0 = 0.0;
+  double dt = 0.001;
+  int nbits = 64;
+  std::string test_header = "test of fdfpp: the CXX wrapper of the fdf C library";
+  std::string units = "volts";
+  std::vector<int> test_dims;
+  test_dims.push_back(1024);
+  
+  
+}
+
+TEST_F(fdfppClassTest, fdfpp_header_write)
+{
+  
+  double zcv = 0.0;
+  double vpc = 1.0;
+  double t0 = 0.0;
+  double dt = 0.001;
+  int nbits = 64;
+  std::string test_header = "test of fdfpp: the CXX wrapper of the fdf C library";
+  std::string units = "volts";
+  std::vector<int> test_dims;
+  test_dims.push_back(1024);
+
+  string fdf_file_name = "one_unittest_fdf.fdf";  
+  FdfPP oneFdfPP;
+  oneFdfPP.openWrite(fdf_file_name,0);
+  EXPECT_NO_THROW(oneFdfPP.preamble( fdf_t0dt_scaled,
+                                     test_header,
+                                     zcv,
+                                     vpc,
+                                     t0,
+                                     dt,
+                                     nbits,
+                                     units,
+                                     test_dims 
+                                     )
+                  );
+  //  EXPECT_EQ(-1, oneFdfPP.
+  //  EXPECT_EQ(1,fdfppWriteHeader());
+  oneFdfPP.close();
+}
+
+
+TEST_F(fdfppClassTest, DISABLED_fdfpp_read_write)
 {
   // test the ability to create a .fdf file,
   // write data, read float data
-  EXPECT_TRUE(fdfppWriteReadFloat());
+  //  EXPECT_TRUE(fdfppWriteReadFloat());
 }
 
 
