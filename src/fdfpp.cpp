@@ -237,7 +237,7 @@ std::vector<int> FdfPP::dims(void) const
 long FdfPP::writeHeader(void)
 {
   // todo: finish write header imp
-
+  return(1);
 }
 // long FdfPP::writeData(long fdf_type, void* data)
 // {
