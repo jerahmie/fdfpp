@@ -201,15 +201,6 @@ TEST_F(fdfppClassTest, fdfpp_make_file)
 TEST_F(fdfppClassTest, fdfpp_setters_and_getters)
 {
   // test the setter and getter functions
-  double zcv = 0.0;
-  double vpc = 1.0;
-  double t0 = 0.0;
-  double dt = 0.001;
-  int nbits = 64;
-  std::string test_header = "test of fdfpp: the CXX wrapper of the fdf C library";
-  std::string units = "volts";
-  std::vector<int> test_dims;
-  test_dims.push_back(1024);
   FdfPP test4FdfPP;
   // fdf file types
   EXPECT_NO_THROW(test4FdfPP.fileType(cp_info));
@@ -272,34 +263,31 @@ TEST_F(fdfppClassTest, fdfpp_setters_and_getters)
   dims3.push_back(2);
   dims3.push_back(5);   // 8x2x5
   EXPECT_EQ(64,dims1[0]);
-  EXPECT_EQ(64,dims2[0]);
-  EXPECT_EQ(64,dims2[1]);
-  EXPECT_EQ(64,dims3[0]);
-  EXPECT_EQ(64,dims3[1]);
-  EXPECT_EQ(64,dims3[2]);
+  EXPECT_EQ(32,dims2[0]);
+  EXPECT_EQ(32,dims2[1]);
+  EXPECT_EQ(8,dims3[0]);
+  EXPECT_EQ(2,dims3[1]);
+  EXPECT_EQ(5,dims3[2]);
   EXPECT_NO_THROW(test4FdfPP.dims(dims1));
   dims_get = test4FdfPP.dims();
-  EXPECT_EQ(64,dims1[0]);
+  EXPECT_EQ(64,dims_get[0]);
   dims_get.clear();
-  dims_get = test4FdfPP.dims();
   EXPECT_NO_THROW(test4FdfPP.dims(dims2));
-  EXPECT_EQ(64,dims1[0]);
-  EXPECT_EQ(64,dims1[0]);  
-  dims_get.clear();
   dims_get = test4FdfPP.dims();
+  EXPECT_EQ(32,dims_get[0]);
+  EXPECT_EQ(32,dims_get[1]);  
+  dims_get.clear();
   EXPECT_NO_THROW(test4FdfPP.dims(dims3));
-  EXPECT_EQ(64,dims1[0]);
-  EXPECT_EQ(64,dims1[0]);
-  EXPECT_EQ(64,dims1[0]);
-  
-
-  // preamble -- test the whole thing at once
-    
+  dims_get = test4FdfPP.dims();
+  EXPECT_EQ(8,dims_get[0]);
+  EXPECT_EQ(2,dims_get[1]);
+  EXPECT_EQ(5,dims_get[2]);
 }
 
-TEST_F(fdfppClassTest, fdfpp_header_write)
+TEST_F(fdfppClassTest, fdfpp_preamble)
 {
-  
+  FdfPP test5FdfPP;
+  // preamble -- test the whole thing at once
   double zcv = 0.0;
   double vpc = 1.0;
   double t0 = 0.0;
@@ -308,8 +296,42 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
   std::string test_header = "test of fdfpp: the CXX wrapper of the fdf C library";
   std::string units = "volts";
   std::vector<int> test_dims;
-  test_dims.push_back(1024);
+  test_dims.push_back(1024);  
 
+  EXPECT_NO_THROW(test5FdfPP.preamble(t0dt_scaled, test_header,
+                                      zcv, vpc, t0, dt, nbits,
+                                      units, test_dims));
+  EXPECT_EQ(t0dt_scaled, test5FdfPP.fileType());
+  EXPECT_STREQ(test_header.c_str(), test5FdfPP.header().c_str());
+  EXPECT_EQ(nbits, test5FdfPP.nbits());
+  EXPECT_STREQ(units.c_str(), test5FdfPP.units().c_str());
+  EXPECT_DOUBLE_EQ(zcv, test5FdfPP.zcv());
+  EXPECT_DOUBLE_EQ(vpc, test5FdfPP.vpc());
+  EXPECT_DOUBLE_EQ(t0, test5FdfPP.t0());
+  EXPECT_DOUBLE_EQ(dt, test5FdfPP.dt());
+  std::vector<int> read_dims;
+  read_dims = test5FdfPP.dims();
+  EXPECT_EQ(1024, read_dims[0]);
+}
+
+TEST_F(fdfppClassTest, fdfpp_header_write)
+{
+  append1 = 1;
+  double zcv = 0.0;
+  double vpc = 1.0;
+  double t0 = 0.0;
+  double dt = 0.001;
+  int nbits = 64;
+  std::string test_header = "test of fdfpp: the CXX wrapper of the fdf C library";
+  std::string units = "volts";
+  std::vector<int> test_dims;
+  const int data_length = 1024;
+  test_dims.push_back(data_length);
+
+  double data[data_length];
+  for (int indx=0, indx < 1024
+  
+  
   string fdf_file_name = "one_unittest_fdf.fdf";  
   FdfPP oneFdfPP;
   oneFdfPP.openWrite(fdf_file_name,0);
@@ -324,8 +346,7 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
                                      test_dims 
                                      )
                   );
-  //  EXPECT_EQ(-1, oneFdfPP.
-  //  EXPECT_EQ(1,fdfppWriteHeader());
+  oneFdfPP.writeData(append1, )
   oneFdfPP.close();
 }
 
