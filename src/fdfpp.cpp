@@ -234,10 +234,42 @@ std::vector<int> FdfPP::dims(void) const
 }
 
 
-long FdfPP::writeHeader(void)
+long FdfPP::writePreamble(void)
 {
-  // todo: finish write header imp
-  return(1);
+  /// format the fdf preamble and write to file
+  /// FDF preamble items are 64 bits in length and need to be blanked before
+  /// writing to the target fdf file.
+  /// This is performed using low-level C-style memory manipulation routines
+  /// memset() and memcpy() on a buffer before calling the low-level
+  /// fdf_write_item() function
+  long fdf_status = 0;
+  long *pdim_header_item_name_length;
+
+  *pdim_header_item_name_length = FDF_ITEMNAME_LENGTH;
+  
+  const char* fdfname_str = "filetype";
+  char * filetype_str;
+  if ( fdfpp_file_type_ == t0dt_scaled)
+    {
+      filetype_str = "t0dt_scaled";
+    }
+  else
+    {
+      filetype_str = "cp_info";
+    }
+
+  char fdfname[FDF_ITEMNAME_LENGTH];
+  char filetype[FDF_ITEMNAME_LENGTH];  
+  memset(&fdfname, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&filetype, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&fdfname, fdfname_str, strlen(fdfname_str));
+  memcpy(&filetype, filetype_str, strlen(filetype_str));
+//
+//  // write the fdf file type item
+//  fdf_status = fdf_write_item(fp_, 0, fdfname, 1,
+//                              pdim_header_item_name_length,
+//                              fdf_char, (void*)filetype, err_);
+  return(fdf_status);
 }
 // long FdfPP::writeData(long fdf_type, void* data)
 // {

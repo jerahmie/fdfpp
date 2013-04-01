@@ -78,7 +78,7 @@ class FdfPP
 //  long fwriteErr();
 
 private:
-  long writeHeader(void);
+  long writePreamble(void);
   FILE* fp_;
   long err_;
   fdfpp_file_type fdfpp_file_type_;    // 't0dt_scaled' or 'cp_info'
