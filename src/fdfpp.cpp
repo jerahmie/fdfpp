@@ -243,7 +243,7 @@ long FdfPP::writePreamble(void)
   /// memset() and memcpy() on a buffer before calling the low-level
   /// fdf_write_item() function
   long fdf_status = 0;
-  long *pdim_header_item_name_length;
+  int *pdim_header_item_name_length;
 
   *pdim_header_item_name_length = FDF_ITEMNAME_LENGTH;
   
@@ -264,17 +264,20 @@ long FdfPP::writePreamble(void)
   memset(&filetype, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&fdfname, fdfname_str, strlen(fdfname_str));
   memcpy(&filetype, filetype_str, strlen(filetype_str));
-//
-//  // write the fdf file type item
-//  fdf_status = fdf_write_item(fp_, 0, fdfname, 1,
-//                              pdim_header_item_name_length,
-//                              fdf_char, (void*)filetype, err_);
+
+  // write the fdf file type item
+  fdf_status = fdf_write_item(fp_, 0, fdfname, 1,
+                              pdim_header_item_name_length,
+                              fdf_char, (void*)filetype, err_);
   return(fdf_status);
 }
-// long FdfPP::writeData(long fdf_type, void* data)
-// {
-// // check for valid header, write header, then write data
-// }
+long FdfPP::writeData(long fdf_type, void* data)
+{
+  // check for valid preamble, write preamble, then write data
+  long write_status = 0;
+  write_status = writePreamble();
+  return write_status;
+}
 
 
 
