@@ -68,7 +68,7 @@ class FdfPP
   
 //long seekEnd(long *nitems);
   long writeItem(long, char*, long, const int*, long, void*);
-  long writeData(long, void*);
+  long writeT0DTData(long, void*);
   long seekItem(long*, char*, long*, int*, long*, long*);
   long isLink(char*, long*);
 //  long dataLength(long, const int*, long);
@@ -78,7 +78,7 @@ class FdfPP
 //  long fwriteErr();
 
 private:
-  long writePreamble(void);
+  long writeT0DTPreamble(void);
   FILE* fp_;
   long err_;
   fdfpp_file_type fdfpp_file_type_;    // 't0dt_scaled' or 'cp_info'

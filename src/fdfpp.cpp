@@ -234,7 +234,7 @@ std::vector<int> FdfPP::dims(void) const
 }
 
 
-long FdfPP::writePreamble(void)
+long FdfPP::writeT0DTPreamble(void)
 {
   /// format the fdf preamble and write to file
   /// FDF preamble items are 64 bits in length and need to be blanked before
@@ -245,7 +245,7 @@ long FdfPP::writePreamble(void)
   long fdf_status = 0;
   int *pdim_header_item_name_length;
 
-  *pdim_header_item_name_length = FDF_ITEMNAME_LENGTH;
+  //*pdim_header_item_name_length = FDF_ITEMNAME_LENGTH;
   
   const char* fdfname_str = "filetype";
   char * filetype_str;
@@ -255,31 +255,105 @@ long FdfPP::writePreamble(void)
     }
   else
     {
-      filetype_str = "cp_info";
+      return(EXIT_FAILURE);
     }
 
-  char fdfname[FDF_ITEMNAME_LENGTH];
-  char filetype[FDF_ITEMNAME_LENGTH];  
-  memset(&fdfname, 0x0, FDF_ITEMNAME_LENGTH);
-  memset(&filetype, 0x0, FDF_ITEMNAME_LENGTH);
-  memcpy(&fdfname, fdfname_str, strlen(fdfname_str));
-  memcpy(&filetype, filetype_str, strlen(filetype_str));
-
+  char buffer[FDF_ITEMNAME_LENGTH];
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, fdfname_str, strlen(fdfname_str));
   // write the fdf file type item
-  fdf_status = fdf_write_item(fp_, 0, fdfname, 1,
+  *pdim_header_item_name_length = strlen(filetype_str);
+  fdf_status = fdf_write_item(fp_, 0, buffer, 1,
                               pdim_header_item_name_length,
-                              fdf_char, (void*)filetype, err_);
+                              fdf_char, (void*)filetype_str, err_);
+  // write the header
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "header", strlen("header"));
+  *pdim_header_item_name_length = header_.length();
+  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
+                              pdim_header_item_name_length,
+                              fdf_char, (void*)header_.c_str(), err_);
+  // zcv
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "zcv", strlen("zcv"));
+  *pdim_header_item_name_length = 1;
+  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
+                              pdim_header_item_name_length,
+                              fdf_double, (void*)&zcv_, err_);
+
+  // vpc
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "vpc", strlen("vpc"));
+  *pdim_header_item_name_length = 1;
+  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
+                              pdim_header_item_name_length,
+                              fdf_double, (void*)&vpc_, err_);  
+  // t0
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "t0", strlen("t0"));
+  *pdim_header_item_name_length = 1;
+  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
+                              pdim_header_item_name_length,
+                              fdf_double, (void*)&t0_, err_);    
+  // dt
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "dt", strlen("dt"));
+  *pdim_header_item_name_length = 1;
+  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
+                              pdim_header_item_name_length,
+                              fdf_double, (void*)&dt_, err_);      
+  // nbits
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "nbits", strlen("nbits"));
+  *pdim_header_item_name_length = 1;
+  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
+                              pdim_header_item_name_length,
+                              fdf_i32, (void*)&nbits_, err_);      
+  
+  // units
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "units", strlen("units"));
+  *pdim_header_item_name_length = units_.length();
+  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
+                              pdim_header_item_name_length,
+                              fdf_char, (void*)units_.c_str(), err_);  
+  // dims
+  
   return(fdf_status);
 }
-long FdfPP::writeData(long fdf_type, void* data)
+long FdfPP::writeT0DTData(long fdf_type, void* data)
 {
   // check for valid preamble, write preamble, then write data
   long write_status = 0;
-  write_status = writePreamble();
+  write_status = writeT0DTPreamble();
+  std::cout << "after write preamble()" << std::endl;
+  char buffer[FDF_ITEMNAME_LENGTH];
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "data", strlen("data"));
+  
+  long ndims = dims_.size();
+  int* dims;
+  std::cout << "before memory allocation" << std::endl;
+  // allocate memory for dimensions structure and populate from member
+  // variable dims_
+  dims = (int*) malloc(ndims * sizeof(int));
+  std::cout << "ndims: " << ndims << std::endl;
+  for (int indx=0; indx<ndims; indx++)
+    {
+      std::cout << "indx: " << indx << std::endl;
+      dims[indx] = dims_[indx];
+    }
+  std::cout << "after fill array" << std::endl;
+// let's just check the result
+//  for (int jndx=0; jndx<ndims; jndx++)
+//    {
+//      std::cout << "dims["  << jndx << "]: " << dims[jndx] << std::endl;
+//    }
+//  
+//  //  write_status = fdf_write_item(fp_, 1, buffer, ndims,)
+  free (dims);
   return write_status;
 }
-
-
 
 long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
                       long type, void *data)

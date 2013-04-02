@@ -80,76 +80,6 @@ protected:
     char fdfname[FDF_ITEMNAME_LENGTH];
     char filetype[FDF_ITEMNAME_LENGTH];
 
-    //const char* fdfname_str = "filetype";
-    //const char* filetype_str = "t0dt_scaled";
-    //    memset(&fdfname, 0, FDF_ITEMNAME_LENGTH);
-    //    memset(&filetype, 0, FDF_ITEMNAME_LENGTH);
-    //    memcpy(&fdfname, fdfname_str, strlen(fdfname_str));
-    //    memcpy(&filetype, filetype_str, strlen(filetype_str));
-
-
-//    write_item_status = myFdfPP.preamble( fdf_t0dt_scaled,
-//                                          test_header,
-//                                          zcv,
-//                                          vpc,
-//                                          t0,
-//                                          dt,
-//                                          nbits,
-//                                          units,
-//                                          test_dims
-//                                          );
-    //    write_item_status = myFdfPP.writeData(append0, "data", (void*)data);
-    
-					  
-//    write_item_status = myFdfPP.writeItem(append1,
-//					  pheader,
-//					  ndims1,
-//					  pheader_len,
-//					  fdf_char,
-//					  (void*)header);
-//    write_item_status = myFdfPP.writeItem(append1,
-//					  pzcv,
-//					  ndims1,
-//					  pdim64,
-//					  fdf_double,
-//					  (void*)&zcv);
-//    write_item_status = myFdfPP.writeItem(append1,
-//					  pvpc,
-//					  ndims1,
-//					  pdim64,
-//					  fdf_double,
-//					 (void*)&vpc);
-//    write_item_status = myFdfPP.writeItem(append1,
-//					  pt0,
-//					  ndims1,
-//					  pdim2,
-//					  fdf_double,
-//					  (void*)&t0);
-//    write_item_status = myFdfPP.writeItem(append1,
-//					  pdt,
-//					  ndims1,
-//					  pdim64,
-//					  fdf_double,
-//					  (void*)&dt);
-//    write_item_status = myFdfPP.writeItem(append1,
-//					  pnbits,
-//					  ndims1,
-//					  pdim64,
-//					  fdf_i32,
-//					  (void*)&nbits);
-//    write_item_status = myFdfPP.writeItem(append1,
-//					  punits,
-//					  ndims1,
-//					  punit_len,
-//					  fdf_char,
-//					  (void*)units);
-//    write_item_status = myFdfPP.writeItem(append1,
-//					  pdata,
-//					  ndims1,
-//					  pdimDATA,
-//					  fdf_double,
-//					  (void*)data);
-//    
     // close the file
     myFdfPP.close();
     
@@ -351,7 +281,7 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
                                      test_dims 
                                      )
                   );
-  //  oneFdfPP.writeData(append1, )
+  oneFdfPP.writeT0DTData(append1, (void*)data);
   oneFdfPP.close();
 }
 
