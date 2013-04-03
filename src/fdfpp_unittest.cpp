@@ -187,7 +187,7 @@ TEST_F(fdfppClassTest, fdfpp_setters_and_getters)
   EXPECT_EQ(64, test4FdfPP.nbits());      
   
   // dims
- std:vector<int> dims1, dims2, dims3, dims_get;
+  std::vector<int> dims1, dims2, dims3, dims_get;
   dims1.push_back(64);  // linear array of 64
   dims2.push_back(32);
   dims2.push_back(32);  // 32x32 matrix
