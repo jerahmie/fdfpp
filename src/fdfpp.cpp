@@ -242,11 +242,14 @@ long FdfPP::writeT0DTPreamble(void)
   /// This is performed using low-level C-style memory manipulation routines
   /// memset() and memcpy() on a buffer before calling the low-level
   /// fdf_write_item() function
-  long fdf_status = 0;
-  int *pdim_header_item_name_length;
 
-  //*pdim_header_item_name_length = FDF_ITEMNAME_LENGTH;
+  long fdf_status = 0;
   
+  int dim_header_item_name_length;
+  int *pdim_header_item_name_length;
+//
+//  // *pdim_header_item_name_length = FDF_ITEMNAME_LENGTH;
+//  
   const char* fdfname_str = "filetype";
   char * filetype_str;
   if ( fdfpp_file_type_ == t0dt_scaled)
@@ -262,21 +265,26 @@ long FdfPP::writeT0DTPreamble(void)
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, fdfname_str, strlen(fdfname_str));
   // write the fdf file type item
-  *pdim_header_item_name_length = strlen(filetype_str);
+  std::cout << "length of " << filetype_str << " is "
+            << strlen(filetype_str) << std::endl;
+
+  dim_header_item_name_length = strlen(filetype_str);
+  pdim_header_item_name_length = &dim_header_item_name_length;
+  
   fdf_status = fdf_write_item(fp_, 0, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_char, (void*)filetype_str, err_);
   // write the header
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "header", strlen("header"));
-  *pdim_header_item_name_length = header_.length();
+  dim_header_item_name_length = header_.length();
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_char, (void*)header_.c_str(), err_);
   // zcv
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "zcv", strlen("zcv"));
-  *pdim_header_item_name_length = 1;
+  dim_header_item_name_length = 1;
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_double, (void*)&zcv_, err_);
@@ -284,28 +292,28 @@ long FdfPP::writeT0DTPreamble(void)
   // vpc
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "vpc", strlen("vpc"));
-  *pdim_header_item_name_length = 1;
+  dim_header_item_name_length = 1;
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_double, (void*)&vpc_, err_);  
   // t0
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "t0", strlen("t0"));
-  *pdim_header_item_name_length = 1;
+  dim_header_item_name_length = 1;
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_double, (void*)&t0_, err_);    
   // dt
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "dt", strlen("dt"));
-  *pdim_header_item_name_length = 1;
+  dim_header_item_name_length = 1;
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_double, (void*)&dt_, err_);      
   // nbits
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "nbits", strlen("nbits"));
-  *pdim_header_item_name_length = 1;
+  dim_header_item_name_length = 1;
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_i32, (void*)&nbits_, err_);      
@@ -313,7 +321,7 @@ long FdfPP::writeT0DTPreamble(void)
   // units
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "units", strlen("units"));
-  *pdim_header_item_name_length = units_.length();
+  dim_header_item_name_length = units_.length();
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_char, (void*)units_.c_str(), err_);  
@@ -321,38 +329,40 @@ long FdfPP::writeT0DTPreamble(void)
   
   return(fdf_status);
 }
+
 long FdfPP::writeT0DTData(long fdf_type, void* data)
 {
   // check for valid preamble, write preamble, then write data
   long write_status = 0;
   write_status = writeT0DTPreamble();
-  std::cout << "after write preamble()" << std::endl;
-  char buffer[FDF_ITEMNAME_LENGTH];
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "data", strlen("data"));
+  // std::cout << "after write preamble()" << std::endl;
+  // char buffer[FDF_ITEMNAME_LENGTH];
+  // memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  // memcpy(&buffer, "data", strlen("data"));
   
-  long ndims = dims_.size();
-  int* dims;
-  std::cout << "before memory allocation" << std::endl;
+  //long ndims = dims_.size();
+  //int* dims;
+  //std::cout << "before memory allocation" << std::endl;
   // allocate memory for dimensions structure and populate from member
   // variable dims_
-  dims = (int*) malloc(ndims * sizeof(int));
-  std::cout << "ndims: " << ndims << std::endl;
-  for (int indx=0; indx<ndims; indx++)
-    {
-      std::cout << "indx: " << indx << std::endl;
-      dims[indx] = dims_[indx];
-    }
-  std::cout << "after fill array" << std::endl;
-// let's just check the result
-//  for (int jndx=0; jndx<ndims; jndx++)
-//    {
-//      std::cout << "dims["  << jndx << "]: " << dims[jndx] << std::endl;
-//    }
-//  
-//  //  write_status = fdf_write_item(fp_, 1, buffer, ndims,)
-  free (dims);
-  return write_status;
+  /*  dims = (int*) malloc(ndims * sizeof(int)); */
+  //std::cout << "ndims: " << ndims << std::endl;
+  //  for (int indx=0; indx<ndims; indx++)
+  //    {
+  //      std::cout << "indx: " << indx << std::endl;
+  //      dims[indx] = dims_[indx];
+  //    }
+  //  std::cout << "after fill array" << std::endl;
+  // let's just check the result
+  //  for (int jndx=0; jndx<ndims; jndx++)
+  //    {
+  //      std::cout << "dims["  << jndx << "]: " << dims[jndx] << std::endl;
+  //    }
+  //  
+  //  //  write_status = fdf_write_item(fp_, 1, buffer, ndims,)
+
+  return(write_status);
+
 }
 
 long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,

@@ -57,40 +57,40 @@ protected:
   }
 
 
-  bool fdfppWriteReadFlost(void)
-  {
-    bool read_write_status = false;
-    // create a random name for our fdf file
-    string fdf_file_name = "unittest_fdf.fdf";
-    // create the fdf file with our fdfpp C++ wrapper
-    cout << "fdf_char: " << fdf_char << endl;
-    cout << "fdf_float: " << fdf_float << endl;
-    cout << "fdf_double: " << fdf_double << endl;
-    cout << "FDF_MAXDIMS: " << FDF_MAXDIMS << endl;
-    cout << "FDF_ITEMNAME_LENGTH: " << FDF_ITEMNAME_LENGTH << endl;
-    
-    FdfPP myFdfPP;
-
-    myFdfPP.openWrite(fdf_file_name,0);
-    
-    // add float values to fdf file
-    // filetype fdf item
-    long dim0, dim1, dim2, dim64, dim_data, write_item_status;
-    long *pdim0, *pdim1, *pdim2, *pdim64, *pdimDATA;
-    char fdfname[FDF_ITEMNAME_LENGTH];
-    char filetype[FDF_ITEMNAME_LENGTH];
-
-    // close the file
-    myFdfPP.close();
-    
-    // re-open the fdf file,
-    // read the data value
-    // close the file
-    // compare the data and change read_write_status to 'true' if equal
-    //read_write_status = true;
-    return(read_write_status);
-  }
-
+//  bool fdfppWriteReadFloat(void)
+//  {
+//    bool read_write_status = false;
+//    // create a random name for our fdf file
+//    string fdf_file_name = "unittest_fdf.fdf";
+//    // create the fdf file with our fdfpp C++ wrapper
+//    cout << "fdf_char: " << fdf_char << endl;
+//    cout << "fdf_float: " << fdf_float << endl;
+//    cout << "fdf_double: " << fdf_double << endl;
+//    cout << "FDF_MAXDIMS: " << FDF_MAXDIMS << endl;
+//    cout << "FDF_ITEMNAME_LENGTH: " << FDF_ITEMNAME_LENGTH << endl;
+//    
+//    FdfPP myFdfPP;
+//
+//    myFdfPP.openWrite(fdf_file_name,0);
+//    
+//    // add float values to fdf file
+//    // filetype fdf item
+//    long dim0, dim1, dim2, dim64, dim_data, write_item_status;
+//    long *pdim0, *pdim1, *pdim2, *pdim64, *pdimDATA;
+//    char fdfname[FDF_ITEMNAME_LENGTH];
+//    char filetype[FDF_ITEMNAME_LENGTH];
+//
+//    // close the file
+//    myFdfPP.close();
+//    
+//    // re-open the fdf file,
+//    // read the data value
+//    // close the file
+//    // compare the data and change read_write_status to 'true' if equal
+//    //read_write_status = true;
+//    return(read_write_status);
+//  }
+//
     
   virtual void SetUp(){
     // Code here will be called immediately after constructor (right 
@@ -281,7 +281,8 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
                                      test_dims 
                                      )
                   );
-  oneFdfPP.writeT0DTData(append1, (void*)data);
+  oneFdfPP.writeT0DTPreamble();
+  //  oneFdfPP.writeT0DTData(append1, (void*)data);
   oneFdfPP.close();
 }
 

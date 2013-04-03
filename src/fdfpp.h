@@ -76,9 +76,9 @@ class FdfPP
 // long typeNBytes();
 //  long freadErr();
 //  long fwriteErr();
-
-private:
   long writeT0DTPreamble(void);
+private:
+
   FILE* fp_;
   long err_;
   fdfpp_file_type fdfpp_file_type_;    // 't0dt_scaled' or 'cp_info'
