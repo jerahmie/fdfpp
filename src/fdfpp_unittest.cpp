@@ -261,7 +261,7 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
   double A = 1.0;
   double phi = 0.0;
   double f0 = 50.0;  // 50 Hz
-  double dt = 0.001; // delta t (seconds)
+  double dt = 0.0001; // delta t (seconds)
   double data[data_length];
   for (int indx=0; indx < data_length; indx++)
     data[indx] = A * cos(2.0 * M_PI * f0 * dt_header_write * indx + phi);
