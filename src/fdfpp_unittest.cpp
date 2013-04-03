@@ -29,28 +29,28 @@ protected:
   {
     bool file_exists = false;
     // create a random name for our fdf file
-    char buffer [L_tmpnam];
-    tmpnam(buffer);
-    stringstream fdf_tmp;
-    fdf_tmp << buffer;
-    string fdf_out_file = fdf_tmp.str() + ".fdf";
+    //char buffer [L_tmpnam];
+    //tmpnam(buffer);
+    //stringstream fdf_tmp;
+    //fdf_tmp << buffer;
+    //string fdf_out_file = fdf_tmp.str() + ".fdf";
 
     // create the fdf file with our fdfpp C++ wrapper
     FdfPP myFdfPP;
-    myFdfPP.openWrite(const_cast <char *>(fdf_out_file.c_str()),0);
-    //    myFdfPP.openWrite("unittest_fdf.fdf",0);
+    //myFdfPP.openWrite(const_cast <char *>(fdf_out_file.c_str()),0);
+    myFdfPP.openWrite("unittest_fdf.fdf",0);
     myFdfPP.close();
 
     // open the file; delete if it exists
-    ifstream test_file(const_cast <char *>(fdf_out_file.c_str()));
-    //ifstream test_file("unittest_fdf.fdf");
+    //ifstream test_file(const_cast <char *>(fdf_out_file.c_str()));
+    ifstream test_file("unittest_fdf.fdf");
     cout << "test_file.good(): " << test_file.good() << endl;
     if (test_file.good())
       {
 	cout << "found file." << endl;
 	file_exists = true;
 	test_file.close();
-	remove(fdf_out_file.c_str());
+	remove("unittest_fdf.fdf");
       }
     
     return(file_exists);
