@@ -250,7 +250,7 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
   double zcv = 0.0;
   double vpc = 1.0;
   double t0 = 0.0;
-  double dt_header_write = 0.001;
+  double dt_header_write = 0.0001;
   int nbits = 64;
   std::string test_header = "test of fdfpp: the CXX wrapper of the fdf C library";
   std::string units = "volts";
@@ -261,7 +261,6 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
   double A = 1.0;
   double phi = 0.0;
   double f0 = 50.0;  // 50 Hz
-  double dt = 0.0001; // delta t (seconds)
   double data[data_length];
   for (int indx=0; indx < data_length; indx++)
     data[indx] = A * cos(2.0 * M_PI * f0 * dt_header_write * indx + phi);
