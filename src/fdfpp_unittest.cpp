@@ -260,7 +260,7 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
 
   double A = 1.0;
   double phi = 0.0;
-  double f0 = 50.0*1000;  // 50 kHz
+  double f0 = 50.0;  // 50 Hz
   double dt = 0.001; // delta t (seconds)
   double data[data_length];
   for (int indx=0; indx < data_length; indx++)
@@ -281,8 +281,8 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
                                      test_dims 
                                      )
                   );
-  oneFdfPP.writeT0DTPreamble();
-  //  oneFdfPP.writeT0DTData(append1, (void*)data);
+  //oneFdfPP.writeT0DTPreamble();
+  oneFdfPP.writeT0DTData(append1, (void*)data);
   oneFdfPP.close();
 }
 

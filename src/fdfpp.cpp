@@ -247,9 +247,7 @@ long FdfPP::writeT0DTPreamble(void)
   
   int dim_header_item_name_length;
   int *pdim_header_item_name_length;
-//
-//  // *pdim_header_item_name_length = FDF_ITEMNAME_LENGTH;
-//  
+
   const char* fdfname_str = "filetype";
   char * filetype_str;
   if ( fdfpp_file_type_ == t0dt_scaled)
@@ -264,10 +262,8 @@ long FdfPP::writeT0DTPreamble(void)
   char buffer[FDF_ITEMNAME_LENGTH];
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, fdfname_str, strlen(fdfname_str));
-  // write the fdf file type item
-  std::cout << "length of " << filetype_str << " is "
-            << strlen(filetype_str) << std::endl;
 
+  // write the fdf file type item
   dim_header_item_name_length = strlen(filetype_str);
   pdim_header_item_name_length = &dim_header_item_name_length;
   
@@ -314,6 +310,7 @@ long FdfPP::writeT0DTPreamble(void)
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "nbits", strlen("nbits"));
   dim_header_item_name_length = 1;
+
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_i32, (void*)&nbits_, err_);      
@@ -325,8 +322,6 @@ long FdfPP::writeT0DTPreamble(void)
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_char, (void*)units_.c_str(), err_);  
-  // dims
-  
   return(fdf_status);
 }
 
@@ -335,31 +330,32 @@ long FdfPP::writeT0DTData(long fdf_type, void* data)
   // check for valid preamble, write preamble, then write data
   long write_status = 0;
   write_status = writeT0DTPreamble();
-  // std::cout << "after write preamble()" << std::endl;
-  // char buffer[FDF_ITEMNAME_LENGTH];
-  // memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
-  // memcpy(&buffer, "data", strlen("data"));
+  std::cout << "after write preamble()" << std::endl;
+  char buffer[FDF_ITEMNAME_LENGTH];
+  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memcpy(&buffer, "data", strlen("data"));
   
-  //long ndims = dims_.size();
-  //int* dims;
-  //std::cout << "before memory allocation" << std::endl;
+  long ndims = dims_.size();
+  int* dims;
+  std::cout << "before memory allocation" << std::endl;
   // allocate memory for dimensions structure and populate from member
   // variable dims_
-  /*  dims = (int*) malloc(ndims * sizeof(int)); */
-  //std::cout << "ndims: " << ndims << std::endl;
-  //  for (int indx=0; indx<ndims; indx++)
-  //    {
-  //      std::cout << "indx: " << indx << std::endl;
-  //      dims[indx] = dims_[indx];
-  //    }
-  //  std::cout << "after fill array" << std::endl;
-  // let's just check the result
-  //  for (int jndx=0; jndx<ndims; jndx++)
-  //    {
-  //      std::cout << "dims["  << jndx << "]: " << dims[jndx] << std::endl;
-  //    }
-  //  
-  //  //  write_status = fdf_write_item(fp_, 1, buffer, ndims,)
+  dims = (int*) malloc(ndims * sizeof(int)); 
+  std::cout << "ndims: " << ndims << std::endl;
+  for (int indx=0; indx<ndims; indx++)
+    {
+      std::cout << "indx: " << indx << std::endl;
+      dims[indx] = dims_[indx];
+    }
+  std::cout << "after fill array" << std::endl;
+  //let's just check the result
+  for (int jndx=0; jndx<ndims; jndx++)
+    {
+      std::cout << "dims["  << jndx << "]: " << dims[jndx] << std::endl;
+    }
+  
+  write_status = fdf_write_item(fp_, 1, buffer, ndims,
+                                dims, fdf_double, data, err_);
 
   return(write_status);
 
