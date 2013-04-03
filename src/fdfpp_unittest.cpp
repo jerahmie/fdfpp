@@ -282,8 +282,8 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
                                      test_dims 
                                      )
                   );
-  //oneFdfPP.writeT0DTPreamble();
-  oneFdfPP.writeT0DTData(append1, (void*)data);
+
+  oneFdfPP.writeT0DTScaledData(append1, (void*)data);
   oneFdfPP.close();
 }
 

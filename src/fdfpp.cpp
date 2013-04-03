@@ -236,7 +236,7 @@ std::vector<int> FdfPP::dims(void) const
 }
 
 
-long FdfPP::writeT0DTPreamble(void)
+long FdfPP::writeT0DTScaledPreamble(void)
 {
   /// format the fdf preamble and write to file
   /// FDF preamble items are 64 bits in length and need to be blanked before
@@ -326,11 +326,11 @@ long FdfPP::writeT0DTPreamble(void)
   return(fdf_status);
 }
 
-long FdfPP::writeT0DTData(long fdf_type, void* data)
+long FdfPP::writeT0DTScaledData(long fdf_type, void* data)
 {
   // check for valid preamble, write preamble, then write data
   long write_status = 0;
-  write_status = writeT0DTPreamble();
+  write_status = writeT0DTScaledPreamble();
   std::cout << "after write preamble()" << std::endl;
   char buffer[FDF_ITEMNAME_LENGTH];
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
