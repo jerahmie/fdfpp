@@ -5,6 +5,8 @@
 //
 
 #include<cstdio>
+#include<cstdlib>
+#include<cstring>
 #include<iostream>
 #include<string>
 #include<vector>
@@ -310,7 +312,6 @@ long FdfPP::writeT0DTPreamble(void)
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "nbits", strlen("nbits"));
   dim_header_item_name_length = 1;
-
   fdf_status = fdf_write_item(fp_, 1, buffer, 1,
                               pdim_header_item_name_length,
                               fdf_i32, (void*)&nbits_, err_);      

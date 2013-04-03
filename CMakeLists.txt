@@ -129,12 +129,14 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
      endif(CMAKE_GENERATOR STREQUAL "Visual Studio 10")
     endif(NOT WITH_SHARED_LIBS)
   endif(CMAKE_CXX_COMPILER MATCHES cl)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   # GNU GCC settings
+  find_package( Threads )
   set(CMAKE_C_FLAGS "-O2")
   set(CMAKE_CXX_FLAGS "-O2")
   set(CMAKE_C_FLAGS_DEBUG "-g")
   set(CMAKE_CXX_FLAGS_DEBUG "-g")
+  message(STATUS "CMAKE_SYSTEM_NAME " ${CMAKE_SYSTEM_NAME})
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 ############################################################
@@ -190,6 +192,7 @@ if( GTEST_FOUND )
     target_link_libraries( fdfpp_unittest1
                     ${GTEST_BOTH_LIBRARIES}
 		    fdf
+		    ${CMAKE_THREAD_LIBS_INIT}
 		    )
 endif( GTEST_FOUND )
     

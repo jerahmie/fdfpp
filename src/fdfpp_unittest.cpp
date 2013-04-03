@@ -175,6 +175,8 @@ TEST_F(fdfppClassTest, fdfpp_setters_and_getters)
   EXPECT_NO_THROW(test4FdfPP.dt(0.001));
   EXPECT_DOUBLE_EQ(0.001, test4FdfPP.dt());
   // nbits
+  EXPECT_NO_THROW(test4FdfPP.nbits(16));
+  EXPECT_EQ(16, test4FdfPP.nbits());  
   EXPECT_NO_THROW(test4FdfPP.nbits(-64));
   EXPECT_NE(-64, test4FdfPP.nbits());
   EXPECT_NO_THROW(test4FdfPP.nbits(0));

@@ -9,6 +9,7 @@
 
 
 #include<cstdio>  // required for file*
+#include<cstdlib>
 #include "fdfpp.h"   // fdf library definition
 #include<iostream> 
 
