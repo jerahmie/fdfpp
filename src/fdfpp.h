@@ -18,17 +18,17 @@
 #include "fdf.h"
 
 
-typedef enum fdfpp_file_type_tag{ t0dt_scaled, cp_info} fdfpp_file_type;
+typedef enum fdfpp_file_type_tag{ t0dt_scaled, cp_info } fdfpp_file_type;
 
 class FdfPP
 {
  public:
   FdfPP();
-  //  FdfPP(const FdfPP &other); // copy constructor
-  // FdfPP& operator=(const FdfPP& other) // assignment operator
-//  FdfPP::FdfPP(fdfpp_file_type, const std::string &header, double,
-//                double, double, double, int, const std::string &units,
-//               const std::vector<int> &dims); // constructor with init
+  FdfPP(const FdfPP &other); // copy constructor
+  FdfPP& operator=(const FdfPP& other); // assignment operator
+  FdfPP::FdfPP(fdfpp_file_type, const std::string &header, double,
+               double, double, double, int, const std::string &units,
+               const std::vector<int> &dims); // constructor with init
   virtual ~FdfPP();
 
   void open(char *fname);

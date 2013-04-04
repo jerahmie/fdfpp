@@ -28,21 +28,12 @@ protected:
   bool fdfppCreateFile()
   {
     bool file_exists = false;
-    // create a random name for our fdf file
-    //char buffer [L_tmpnam];
-    //tmpnam(buffer);
-    //stringstream fdf_tmp;
-    //fdf_tmp << buffer;
-    //string fdf_out_file = fdf_tmp.str() + ".fdf";
-
     // create the fdf file with our fdfpp C++ wrapper
     FdfPP myFdfPP;
-    //myFdfPP.openWrite(const_cast <char *>(fdf_out_file.c_str()),0);
     myFdfPP.openWrite("unittest_fdf.fdf",0);
     myFdfPP.close();
 
     // open the file; delete if it exists
-    //ifstream test_file(const_cast <char *>(fdf_out_file.c_str()));
     ifstream test_file("unittest_fdf.fdf");
     cout << "test_file.good(): " << test_file.good() << endl;
     if (test_file.good())
@@ -287,6 +278,55 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
   oneFdfPP.close();
 }
 
+TEST_F(fdfppClassTest, fdfpp_copy_constructor)
+{
+  // test assignment constructor then the copy constructor
+  std::vector<int> one_dims;
+  one_dims.push_back(2048);
+  std::string one_header = "oneFdfPP file header";
+  std::string one_units = "sprinkles";
+  FdfPP oneFdfPP(t0dt_scaled,
+                 one_header,
+                 0.0, 1.0, 0.0, 0.123, 32,
+                 one_units, one_dims);
+  
+  FdfPP twoFdfPP(oneFdfPP);
+  EXPECT_DOUBLE_EQ(0.0, twoFdfPP.zcv());
+  EXPECT_DOUBLE_EQ(1.0, twoFdfPP.vpc());
+  EXPECT_DOUBLE_EQ(0.0, twoFdfPP.t0());
+  EXPECT_DOUBLE_EQ(0.123, twoFdfPP.dt());
+  std::vector<int> two_dims;
+  two_dims = twoFdfPP.dims();
+  EXPECT_EQ(2048, two_dims[0]);
+  EXPECT_EQ(32, twoFdfPP.nbits());
+  EXPECT_STREQ(one_units.c_str(), twoFdfPP.units().c_str());
+}
+
+TEST_F(fdfppClassTest, fdfpp_assignment_operator)
+{
+  // test assignment constructor then the copy constructor
+  std::vector<int> one_dims;
+  one_dims.push_back(2048);
+  std::string one_header = "oneFdfPP file header";
+  std::string one_units = "sprinkles";
+  FdfPP oneFdfPP(t0dt_scaled,
+                 one_header,
+                 1.1, 2.2, 3.3, 0.123, 16,
+                 one_units, one_dims);
+  
+  FdfPP twoFdfPP;
+  twoFdfPP = oneFdfPP;
+  EXPECT_DOUBLE_EQ(1.1, twoFdfPP.zcv());
+  EXPECT_DOUBLE_EQ(2.2, twoFdfPP.vpc());
+  EXPECT_DOUBLE_EQ(3.3, twoFdfPP.t0());
+  EXPECT_DOUBLE_EQ(0.123, twoFdfPP.dt());
+  std::vector<int> two_dims;
+  two_dims = twoFdfPP.dims();
+  EXPECT_EQ(2048, two_dims[0]);
+  EXPECT_EQ(16, twoFdfPP.nbits());
+  EXPECT_STREQ(one_units.c_str(), twoFdfPP.units().c_str());
+
+}
 
 TEST_F(fdfppClassTest, DISABLED_fdfpp_read_write)
 {

@@ -19,6 +19,14 @@ FdfPP::FdfPP()
   // initialize err_
   err_ = 0;
   fp_ = NULL;
+  fdfpp_file_type_ = t0dt_scaled;   // most common fdf file type
+  header_ = "";
+  units_ = "";
+  zcv_ = 0.0;
+  vpc_ = 0.0;
+  t0_ = 0.0;
+  dt_ = 0.0;
+  nbits_ = 32;
 }
 
 FdfPP::~FdfPP()
@@ -27,26 +35,56 @@ FdfPP::~FdfPP()
 }
 
 // Copy Constructor
-// FdfPP::FdfPP(const FdfPP &other){}
+FdfPP::FdfPP(const FdfPP &other)
+  : err_(other.err_),
+    fdfpp_file_type_(other.fdfpp_file_type_),
+    header_(other.header_),
+    units_(other.units_),
+    zcv_(other.zcv_),
+    vpc_(other.vpc_),
+    t0_(other.t0_),
+    dt_(other.dt_),
+    nbits_(other.nbits_),
+    dims_(other.dims_)
+{
+  fp_ = NULL;
+}
 
 // Assignment Operator
-// FdfPP & FdfPP::operator=(const FdfPP &other){}
+FdfPP & FdfPP::operator=(const FdfPP &other)
+{
+  if (this != &other)
+    {
+      fp_ = NULL;  // do not copy the file pointer, only the fdfpp member data
+      err_ = 0; // other object error state is not tracked
+      fdfpp_file_type_ = other.fdfpp_file_type_;
+      header_ = other.header_;
+      units_ = other.units_;
+      zcv_ = other.zcv_;
+      vpc_ = other.vpc_;
+      t0_ = other.t0_;
+      dt_ = other.dt_;
+      nbits_ = other.nbits_;
+      dims_ = other.dims_;      
+    }
+  return *this;
+}
 
 // Constructor with initialization
-//FdfPP::FdfPP(fdfpp_file_type ft, const std::string &header, double zcv,
-//             double vpc, double t0, double dt, int nbits,
-//             const std::string &units, const std::vector<int> &dims)
-//{
-//  fdfpp_file_type_ = ft;
-//  header_ = header;
-//  zcv_ = zcv;
-//  vpc_ = vpc;
-//  t0_ = t0;
-//  dt_ = dt;
-//  nbits_ = nbits;
-//  units_ = units;
-//  dims_ = dims;  
-//}
+FdfPP::FdfPP(fdfpp_file_type ft, const std::string &header, double zcv,
+             double vpc, double t0, double dt, int nbits,
+             const std::string &units, const std::vector<int> &dims)
+{
+  fdfpp_file_type_ = ft;
+  header_ = header;
+  zcv_ = zcv;
+  vpc_ = vpc;
+  t0_ = t0;
+  dt_ = dt;
+  nbits_ = nbits;
+  units_ = units;
+  dims_ = dims;  
+}
 
   
 // fdf functions
