@@ -26,7 +26,7 @@ class FdfPP
   FdfPP();
   FdfPP(const FdfPP &other); // copy constructor
   FdfPP& operator=(const FdfPP& other); // assignment operator
-  FdfPP::FdfPP(fdfpp_file_type, const std::string &header, double,
+  FdfPP(fdfpp_file_type, const std::string &header, double,
                double, double, double, int, const std::string &units,
                const std::vector<int> &dims); // constructor with init
   virtual ~FdfPP();
