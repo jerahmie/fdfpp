@@ -325,14 +325,19 @@ TEST_F(fdfppClassTest, fdfpp_assignment_operator)
   EXPECT_EQ(2048, two_dims[0]);
   EXPECT_EQ(16, twoFdfPP.nbits());
   EXPECT_STREQ(one_units.c_str(), twoFdfPP.units().c_str());
-
+ 
 }
 
-TEST_F(fdfppClassTest, DISABLED_fdfpp_read_write)
+TEST_F(fdfppClassTest, fdfpp_read_write)
 {
   // test the ability to create a .fdf file,
   // write data, read float data
-  //  EXPECT_TRUE(fdfppWriteReadFloat());
+  std::string wr_fdf_file_name = "one_unittest_fdf.fdf";
+  FdfPP wr_FdfPP;
+  wr_FdfPP.open(wr_fdf_file_name);
+  wr_FdfPP.readPreamble();
+  
+  wr_FdfPP.close();
 }
 
 

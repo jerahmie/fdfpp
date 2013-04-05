@@ -24,8 +24,8 @@ class FdfPP
 {
  public:
   FdfPP();
-  FdfPP(const FdfPP &other); // copy constructor
-  FdfPP& operator=(const FdfPP& other); // assignment operator
+  FdfPP(const FdfPP &other);                  // copy constructor
+  FdfPP& operator=(const FdfPP& other);       // assignment operator
   FdfPP(fdfpp_file_type, const std::string &header, double,
                double, double, double, int, const std::string &units,
                const std::vector<int> &dims); // constructor with init
@@ -67,16 +67,17 @@ class FdfPP
   std::vector<int> dims(void) const;
   
 //long seekEnd(long *nitems);
-  long writeItem(long, char*, long, const int*, long, void*);
-  long writeT0DTScaledData(long, void*);
-  long seekItem(long*, char*, long*, int*, long*, long*);
-  long isLink(char*, long*);
+  void writeItem(long, char*, long, const int*, long, void*);
+  void writeT0DTScaledData(long, void*);
+  void seekItem(long*, char*, long*, int*, long*, long*);
+  void isLink(char*, long*);
 //  long dataLength(long, const int*, long);
 //  long readPreamble(char*, long*, int*, long*);  
 // long typeNBytes();
 //  long freadErr();
 //  long fwriteErr();
-  long writeT0DTScaledPreamble(void);
+  void writeT0DTScaledPreamble(void);
+  void readPreamble(void);
 private:
 
   FILE* fp_;

@@ -274,7 +274,7 @@ std::vector<int> FdfPP::dims(void) const
 }
 
 
-long FdfPP::writeT0DTScaledPreamble(void)
+void FdfPP::writeT0DTScaledPreamble(void)
 {
   /// format the fdf preamble and write to file
   /// FDF preamble items are 64 bits in length and need to be blanked before
@@ -283,8 +283,6 @@ long FdfPP::writeT0DTScaledPreamble(void)
   /// memset() and memcpy() on a buffer before calling the low-level
   /// fdf_write_item() function
 
-  long fdf_status = 0;
-  
   int dim_header_item_name_length;
   int *pdim_header_item_name_length;
 
@@ -293,10 +291,6 @@ long FdfPP::writeT0DTScaledPreamble(void)
   if ( fdfpp_file_type_ == t0dt_scaled)
     {
       filetype_str = "t0dt_scaled";
-    }
-  else
-    {
-      return(EXIT_FAILURE);
     }
 
   char buffer[FDF_ITEMNAME_LENGTH];
@@ -307,73 +301,70 @@ long FdfPP::writeT0DTScaledPreamble(void)
   dim_header_item_name_length = strlen(filetype_str);
   pdim_header_item_name_length = &dim_header_item_name_length;
   
-  fdf_status = fdf_write_item(fp_, 0, buffer, 1,
-                              pdim_header_item_name_length,
-                              fdf_char, (void*)filetype_str, err_);
+  err_ = fdf_write_item(fp_, 0, buffer, 1,
+                        pdim_header_item_name_length,
+                        fdf_char, (void*)filetype_str, err_);
   // write the header
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "header", strlen("header"));
   dim_header_item_name_length = header_.length();
-  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
-                              pdim_header_item_name_length,
-                              fdf_char, (void*)header_.c_str(), err_);
+  err_ = fdf_write_item(fp_, 1, buffer, 1,
+                        pdim_header_item_name_length,
+                        fdf_char, (void*)header_.c_str(), err_);
   // zcv
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "zcv", strlen("zcv"));
   dim_header_item_name_length = 1;
-  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
-                              pdim_header_item_name_length,
-                              fdf_double, (void*)&zcv_, err_);
+  err_ = fdf_write_item(fp_, 1, buffer, 1,
+                        pdim_header_item_name_length,
+                        fdf_double, (void*)&zcv_, err_);
 
   // vpc
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "vpc", strlen("vpc"));
   dim_header_item_name_length = 1;
-  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
-                              pdim_header_item_name_length,
-                              fdf_double, (void*)&vpc_, err_);  
+  err_ = fdf_write_item(fp_, 1, buffer, 1,
+                        pdim_header_item_name_length,
+                        fdf_double, (void*)&vpc_, err_);  
   // t0
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "t0", strlen("t0"));
   dim_header_item_name_length = 1;
-  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
-                              pdim_header_item_name_length,
-                              fdf_double, (void*)&t0_, err_);    
+  err_ = fdf_write_item(fp_, 1, buffer, 1,
+                        pdim_header_item_name_length,
+                        fdf_double, (void*)&t0_, err_);    
   // dt
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "dt", strlen("dt"));
   dim_header_item_name_length = 1;
-  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
-                              pdim_header_item_name_length,
-                              fdf_double, (void*)&dt_, err_);      
+  err_ = fdf_write_item(fp_, 1, buffer, 1,
+                        pdim_header_item_name_length,
+                        fdf_double, (void*)&dt_, err_);      
   // nbits
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "nbits", strlen("nbits"));
   dim_header_item_name_length = 1;
-  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
-                              pdim_header_item_name_length,
-                              fdf_i32, (void*)&nbits_, err_);      
+  err_ = fdf_write_item(fp_, 1, buffer, 1,
+                        pdim_header_item_name_length,
+                        fdf_i32, (void*)&nbits_, err_);      
   
   // units
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "units", strlen("units"));
   dim_header_item_name_length = units_.length();
-  fdf_status = fdf_write_item(fp_, 1, buffer, 1,
-                              pdim_header_item_name_length,
-                              fdf_char, (void*)units_.c_str(), err_);  
-  return(fdf_status);
+  err_ = fdf_write_item(fp_, 1, buffer, 1,
+                        pdim_header_item_name_length,
+                        fdf_char, (void*)units_.c_str(), err_);  
 }
 
-long FdfPP::writeT0DTScaledData(long fdf_type, void* data)
+void FdfPP::writeT0DTScaledData(long fdf_type, void* data)
 {
   // check for valid preamble, write preamble, then write data
-  long write_status = 0;
-  write_status = writeT0DTScaledPreamble();
+  writeT0DTScaledPreamble();
   std::cout << "after write preamble()" << std::endl;
   char buffer[FDF_ITEMNAME_LENGTH];
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "data", strlen("data"));
-  
   long ndims = dims_.size();
   int* dims;
   std::cout << "before memory allocation" << std::endl;
@@ -393,33 +384,39 @@ long FdfPP::writeT0DTScaledData(long fdf_type, void* data)
       std::cout << "dims["  << jndx << "]: " << dims[jndx] << std::endl;
     }
   
-  write_status = fdf_write_item(fp_, 1, buffer, ndims,
-                                dims, fdf_double, data, err_);
-
-  return(write_status);
-
+  err_ = fdf_write_item(fp_, 1, buffer, ndims,
+                        dims, fdf_double, data, err_);
 }
 
-long FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
+void FdfPP::readPreamble(void)
+{
+  long *nitems;
+  nitems = new long[1];
+  err_ = fdf_seek_end( fp_, nitems, err_ );
+  std::cout << "readPreamble(): nitems: " << *nitems << std::endl;
+  
+  delete nitems;
+}
+
+
+void FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
                       long type, void *data)
 {
-  long fdf_write_status = fdf_write_item(fp_, append, name,
-                                         ndims, dims, type, data, err_);
-  return(fdf_write_status);
+  err_ = fdf_write_item(fp_, append, name,
+                 ndims, dims, type, data, err_);
+
 }
 //long FdfPP::writeItem(long append, const std::string &name, )
-long FdfPP::seekItem(long *item, char *name, long *ndims, int *dims,
+void FdfPP::seekItem(long *item, char *name, long *ndims, int *dims,
                      long *type, long *nbytes)
 {
-  long fdf_seek_item_status = fdf_seek_item(fp_, item, name,
-                                            ndims, dims, type, nbytes,err_);
-    return(fdf_seek_item_status);
+  err_ = fdf_seek_item(fp_, item, name,
+                       ndims, dims, type, nbytes,err_);
 }
 
-long FdfPP::isLink(char *fname, long *islink)
+void FdfPP::isLink(char *fname, long *islink)
 {
-  long fdf_is_link_status = fdf_is_link(fname, islink);
-  return(fdf_is_link_status);
+  err_ = fdf_is_link(fname, islink);
 }
 
 //long FdfPP::dataLength(long ndims, const int *dims, long type)
