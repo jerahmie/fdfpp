@@ -50,9 +50,9 @@ class FdfPP
   void dt(double);
   void nbits(int);
   void dims(const std::vector<int> &dims);
-  void preamble(fdfpp_file_type, const std::string &header,
-                double, double, double, double,
-                int, const std::string &units,
+  void preamble(fdfpp_file_type ft, const std::string &header,
+                double zcv, double vpc, double t0, double dt,
+                int nbits, const std::string &units,
                 const std::vector<int> &dims);
 
   // getters
@@ -67,9 +67,11 @@ class FdfPP
   std::vector<int> dims(void) const;
   
 //long seekEnd(long *nitems);
-  void writeItem(long, char*, long, const int*, long, void*);
-  void writeT0DTScaledData(long, void*);
-  void seekItem(long*, char*, long*, int*, long*, long*);
+  void writeItem(long append, char *name, long ndims , const int *dims,
+                 long type, void *data);
+  void writeT0DTScaledData(long fdf_type, void* data);
+  void seekItem(long *item, char *name, long *ndims , int *dims,
+                long *type, long *nbytes);
   void isLink(char*, long*);
 //  long dataLength(long, const int*, long);
 //  long readPreamble(char*, long*, int*, long*);  

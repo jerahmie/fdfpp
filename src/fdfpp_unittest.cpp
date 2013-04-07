@@ -336,7 +336,14 @@ TEST_F(fdfppClassTest, fdfpp_read_write)
   FdfPP wr_FdfPP;
   wr_FdfPP.open(wr_fdf_file_name);
   wr_FdfPP.readPreamble();
-  
+  EXPECT_EQ(0, wr_FdfPP.fileType());
+  EXPECT_STREQ("test of fdfpp: the CXX wrapper of the fdf C library",
+               wr_FdfPP.header().c_str());
+  EXPECT_DOUBLE_EQ(0.0, wr_FdfPP.zcv());
+  EXPECT_DOUBLE_EQ(1.0, wr_FdfPP.vpc());
+  EXPECT_DOUBLE_EQ(0.0, wr_FdfPP.t0());
+  EXPECT_DOUBLE_EQ(0.0001, wr_FdfPP.dt());
+  EXPECT_STREQ("volts", wr_FdfPP.units().c_str());
   wr_FdfPP.close();
 }
 

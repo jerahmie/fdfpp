@@ -8,6 +8,7 @@
 #include<cstdlib>
 #include<cstring>
 #include<iostream>
+#include<sstream>
 #include<string>
 #include<vector>
 #include "fdfpp.h"
@@ -390,14 +391,90 @@ void FdfPP::writeT0DTScaledData(long fdf_type, void* data)
 
 void FdfPP::readPreamble(void)
 {
+  // load header data from an open fdf file
+  int *dims;
+  dims = new int[FDF_MAXDIMS];
+  char *name;
+  name = new char[FDF_ITEMNAME_LENGTH];
+  //  char *pname = &name;
+  long ndims, type, pos, nbytes;
   long *nitems;
+  long indx;
+  void* data_buffer;
   nitems = new long[1];
   err_ = fdf_seek_end( fp_, nitems, err_ );
   std::cout << "readPreamble(): nitems: " << *nitems << std::endl;
-  
-  delete nitems;
-}
+  for (long item = 0; item < *nitems; item++)
+    {
+      seekItem(&item, name, &ndims, dims, &type, &nbytes);
 
+      // allocate temporary c-style buffer
+      data_buffer = malloc(nbytes);
+      readData(nbytes, data_buffer);      
+      // set appropriate member variable
+      if (std::strcmp(name, "filetype") == 0)
+        {
+
+          if (std::strcmp((char *)data_buffer, "t0dt_scaled") == 0)
+            {
+              fdfpp_file_type_ = t0dt_scaled;
+            }
+          else if (std::strcmp((char *)data_buffer, "cp_info") == 0)
+            {
+              fdfpp_file_type_ = cp_info;
+            }
+          else
+            std::cout << "Invalid FDF file type detected." << std::endl;
+            
+        }
+      else if (std::strcmp(name, "header") == 0)
+        {
+          std::stringstream header_ss;
+          header_ss << (char*) data_buffer;
+          header_ = header_ss.str();
+          // std::cout << "->> set header: " << header_ << std::endl;
+        }
+      else if (std::strcmp(name, "zcv") == 0)
+        {
+          zcv_ = *((double*) data_buffer);
+          // std::cout << "->> set zcv: " << zcv_ << std::endl;
+        }
+      else if (std::strcmp(name, "vpc") == 0)
+        {
+          vpc_ = *((double*) data_buffer);
+          // std::cout << "->> set vpc: " << vpc_ << std::endl;          
+        }
+      else if (std::strcmp(name, "t0") == 0)
+        {
+          t0_ = *((double*) data_buffer);
+          // std::cout << "->> set t0: " << t0_ <<  std::endl;
+        }
+      else if (std::strcmp(name, "dt") == 0)
+        {
+          dt_ = *((double*) data_buffer);
+          // std::cout << "->> set dt: " << dt_ << std::endl;          
+        }      
+      else if (std::strcmp(name, "nbits") == 0)
+        {
+          nbits_ = *((int*)data_buffer);
+          // std::cout << "->> set nbits: " << nbits_ << std::endl;          
+        }
+      else if (std::strcmp(name, "units") == 0)
+        {
+          std::stringstream units_ss;
+          units_ss << (char*) data_buffer;
+          units_ = units_ss.str();
+          // std::cout << "->> set units: " << units_ << std::endl;          
+        }      
+      else
+        std::cout << "could not determine value" << std::endl;
+    }
+  delete nitems;
+  delete name;
+  delete dims;
+  // free the c-style memory 
+  free(data_buffer);
+}
 
 void FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
                       long type, void *data)
