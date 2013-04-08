@@ -206,7 +206,7 @@ PREAMBLE(dllexport) long fdf_seek_item( FILE *fp, long *item, char *name,
   return err;
 }
 
-long fdf_seek_end( FILE *fp, long *nitems, long err ){
+PREAMBLE(dllexport) long fdf_seek_end( FILE *fp, long *nitems, long err ){
   int dims[FDF_MAXDIMS];
   char name[FDF_ITEMNAME_LENGTH];
   long ndims,type,nbytes;

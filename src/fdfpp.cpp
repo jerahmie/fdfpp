@@ -397,9 +397,8 @@ void FdfPP::readPreamble(void)
   char *name;
   name = new char[FDF_ITEMNAME_LENGTH];
   //  char *pname = &name;
-  long ndims, type, pos, nbytes;
+  long ndims, type, nbytes;
   long *nitems;
-  long indx;
   void* data_buffer;
   nitems = new long[1];
   err_ = fdf_seek_end( fp_, nitems, err_ );

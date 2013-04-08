@@ -74,7 +74,7 @@ PREAMBLE(IMPEX) long fdf_read_data( FILE *fp,
 				long nbytes,
 				void *data, long err);
 
-long fdf_seek_end( FILE *fp, long *nitems, long err );
+PREAMBLE(IMPEX) long fdf_seek_end( FILE *fp, long *nitems, long err );
 
 PREAMBLE(IMPEX) long fdf_write_item( FILE *fp, long append, char *name,
 				long ndims, const int *dims, long type,
