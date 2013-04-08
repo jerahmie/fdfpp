@@ -297,25 +297,29 @@ void FdfPP::writeT0DTScaledPreamble(void)
   char buffer[FDF_ITEMNAME_LENGTH];
   std::cout << "FDF_ITEMNAME_LENGTH: " << FDF_ITEMNAME_LENGTH << std::endl;
   std::cout  << "strlen(buffer): " << strlen(buffer) << std::endl;
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, fdfname_str, strlen(fdfname_str));
+  std::cout  << "strlen(buffer): " << strlen(buffer) << std::endl;
   std::cout << "strlen(fdfname_str): " << strlen(fdfname_str) << std::endl;
   // write the fdf file type item
   dim_header_item_name_length = strlen(filetype_str);
   pdim_header_item_name_length = &dim_header_item_name_length;
-  
   err_ = fdf_write_item(fp_, 0, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_char, (void*)filetype_str, err_);
   // write the header
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "header", strlen("header"));
   dim_header_item_name_length = header_.length();
+  std::cout << "header_length: " << dim_header_item_name_length
+	    << " " << *pdim_header_item_name_length<< std::endl;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_char, (void*)header_.c_str(), err_);
+  std::cout << (void *)header_.c_str() << std::endl;
+  std::cout << header_.c_str() << std::endl;
   // zcv
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "zcv", strlen("zcv"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
@@ -323,28 +327,28 @@ void FdfPP::writeT0DTScaledPreamble(void)
                         fdf_double, (void*)&zcv_, err_);
 
   // vpc
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "vpc", strlen("vpc"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_double, (void*)&vpc_, err_);  
   // t0
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "t0", strlen("t0"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_double, (void*)&t0_, err_);    
   // dt
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "dt", strlen("dt"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_double, (void*)&dt_, err_);      
   // nbits
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "nbits", strlen("nbits"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
@@ -352,7 +356,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
                         fdf_i32, (void*)&nbits_, err_);      
   
   // units
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "units", strlen("units"));
   dim_header_item_name_length = units_.length();
   err_ = fdf_write_item(fp_, 1, buffer, 1,
@@ -366,7 +370,7 @@ void FdfPP::writeT0DTScaledData(long fdf_type, void* data)
   writeT0DTScaledPreamble();
   std::cout << "after write preamble()" << std::endl;
   char buffer[FDF_ITEMNAME_LENGTH];
-  memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
+  memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "data", strlen("data"));
   long ndims = dims_.size();
   int* dims;
@@ -408,7 +412,7 @@ void FdfPP::readPreamble(void)
   for (long item = 0; item < *nitems; item++)
     {
       seekItem(&item, name, &ndims, dims, &type, &nbytes);
-
+      std::cout "nbytes: " << nbytes << std::endl;
       // allocate temporary c-style buffer
       data_buffer = malloc(nbytes);
       readData(nbytes, data_buffer);      

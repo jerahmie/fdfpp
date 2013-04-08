@@ -337,6 +337,7 @@ TEST_F(fdfppClassTest, fdfpp_read_write)
   EXPECT_EQ(0, wr_FdfPP.fileType());
   EXPECT_STREQ("test of fdfpp: the CXX wrapper of the fdf C library",
                wr_FdfPP.header().c_str());
+  cout << wr_FdfPP.header() << endl;
   EXPECT_DOUBLE_EQ(0.0, wr_FdfPP.zcv());
   EXPECT_DOUBLE_EQ(1.0, wr_FdfPP.vpc());
   EXPECT_DOUBLE_EQ(0.0, wr_FdfPP.t0());

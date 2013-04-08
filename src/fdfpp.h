@@ -78,9 +78,9 @@ class FdfPP
 // long typeNBytes();
 //  long freadErr();
 //  long fwriteErr();
-  void writeT0DTScaledPreamble(void);
   void readPreamble(void);
 private:
+  void writeT0DTScaledPreamble(void);
 
   FILE* fp_;
   long err_;
