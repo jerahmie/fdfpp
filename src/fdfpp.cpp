@@ -158,12 +158,14 @@ void FdfPP::header(const std::string &header)
 {
   /// set the header, a string of up to 64 characters
   /// (over 64 characters will be truncated)
+  // todo: add check for header longer than 64 bytes
   header_ = header;
 }
 
 void FdfPP::units(const std::string &units)
 {
-  /// set the signal units (i.e. 'volts') 
+  /// set the signal units (i.e. 'volts')
+  // todo: add check for units greater than 64 bytes
   units_ = units;
 }
 
