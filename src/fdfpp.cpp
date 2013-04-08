@@ -412,7 +412,7 @@ void FdfPP::readPreamble(void)
   for (long item = 0; item < *nitems; item++)
     {
       seekItem(&item, name, &ndims, dims, &type, &nbytes);
-      std::cout "nbytes: " << nbytes << std::endl;
+      std::cout << "nbytes: " << nbytes << std::endl;
       // allocate temporary c-style buffer
       data_buffer = malloc(nbytes);
       readData(nbytes, data_buffer);      
