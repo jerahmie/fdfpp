@@ -331,9 +331,20 @@ TEST_F(fdfppClassTest, fdfpp_read_write)
   // test the ability to create a .fdf file,
   // write data, read float data
   std::string wr_fdf_file_name = "one_unittest_fdf.fdf";
-  FdfPP wr_FdfPP;
+  const int data_length = 1024;
+  double ref_data[data_length];
+  double fdf_data[data_length];
+  double ref_dt = 0.0001;
+  double A = 1.0;
+  double phi = 0.0;
+  double f0 = 50.0;  // 50 Hz
+  for (int indx=0; indx < data_length; indx++)
+    ref_data[indx] = A * cos(2.0 * M_PI * f0 * ref_dt * indx + phi);
+
+  FdfPP wr_FdfPP;  
   wr_FdfPP.open(wr_fdf_file_name);
-  wr_FdfPP.readPreamble();
+  
+  wr_FdfPP.readT0DT_Scaled((void*)fdf_data);
   EXPECT_EQ(0, wr_FdfPP.fileType());
   EXPECT_STREQ("test of fdfpp: the CXX wrapper of the fdf C library",
                wr_FdfPP.header().c_str());
@@ -344,6 +355,11 @@ TEST_F(fdfppClassTest, fdfpp_read_write)
   EXPECT_DOUBLE_EQ(0.0, wr_FdfPP.t0());
   EXPECT_DOUBLE_EQ(0.0001, wr_FdfPP.dt());
   EXPECT_STREQ("volts", wr_FdfPP.units().c_str());
+  // cycle through read fdf values and check against reference data
+  for (int indx=0; indx < data_length; indx++)
+    {
+      EXPECT_DOUBLE_EQ(ref_data[indx], fdf_data[indx]);
+    }
   wr_FdfPP.close();
 }
 

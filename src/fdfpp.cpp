@@ -28,11 +28,13 @@ FdfPP::FdfPP()
   t0_ = 0.0;
   dt_ = 0.0;
   nbits_ = 32;
+  //  data_ = NULL;
 }
 
 FdfPP::~FdfPP()
 {
   // FdfPP destructor
+  //  free(data_);
 }
 
 // Copy Constructor
@@ -395,7 +397,7 @@ void FdfPP::writeT0DTScaledData(long fdf_type, void* data)
                         dims, fdf_double, data, err_);
 }
 
-void FdfPP::readPreamble(void)
+void FdfPP::readT0DT_Scaled(void* data)
 {
   // load header data from an open fdf file
   int *dims;
@@ -463,7 +465,12 @@ void FdfPP::readPreamble(void)
           std::stringstream units_ss;
           units_ss << (char*) data_buffer;
           units_ = units_ss.str();
-        }      
+        }
+      else if (std::strcmp(name, "data") == 0)
+        {
+          // allocate memory & copy
+          memcpy(data, data_buffer, nbytes);
+        }
       else
         std::cout << "could not determine value" << std::endl;
     }

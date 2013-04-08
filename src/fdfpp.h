@@ -78,7 +78,7 @@ class FdfPP
 // long typeNBytes();
 //  long freadErr();
 //  long fwriteErr();
-  void readPreamble(void);
+  void readT0DT_Scaled(void* data);
 private:
   void writeT0DTScaledPreamble(void);
 
@@ -89,6 +89,7 @@ private:
   double zcv_, vpc_, t0_, dt_;
   int nbits_;
   std::vector<int> dims_;
+  //  void* data_; // pointer to fdf data
 };
 
 #endif // FDFPP_H_
