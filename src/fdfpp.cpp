@@ -123,14 +123,12 @@ void FdfPP::openWrite(const std::string &fname, long append)
 {
   /// open fdf file for writing ("r+w")
   fp_ = fdf_open_write(const_cast <char *>(fname.c_str()),append);
-  std::cout << "open_write()" << std::endl;
 }
 
 void FdfPP::close()
 {
   /// close our fdf file
   fdf_close(fp_);
-  std::cout << "close()" << std::endl;
 }
 
 long FdfPP::readData(long nbytes, void *data)
@@ -299,12 +297,8 @@ void FdfPP::writeT0DTScaledPreamble(void)
     }
 
   char buffer[FDF_ITEMNAME_LENGTH];
-  std::cout << "FDF_ITEMNAME_LENGTH: " << FDF_ITEMNAME_LENGTH << std::endl;
-  std::cout  << "strlen(buffer): " << strlen(buffer) << std::endl;
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, fdfname_str, strlen(fdfname_str));
-  std::cout  << "strlen(buffer): " << strlen(buffer) << std::endl;
-  std::cout << "strlen(fdfname_str): " << strlen(fdfname_str) << std::endl;
   // write the fdf file type item
   dim_header_item_name_length = strlen(filetype_str);
   pdim_header_item_name_length = &dim_header_item_name_length;
@@ -318,8 +312,6 @@ void FdfPP::writeT0DTScaledPreamble(void)
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_char, (void*)header_.c_str(), err_);
-  std::cout << "strlen(\"header\") : " << strlen("header")
-	    << " " << strlen((char *)"header") << std::endl;
   // zcv
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, (char *)"zcv", strlen((char *)"zcv"));
@@ -370,29 +362,18 @@ void FdfPP::writeT0DTScaledData(long fdf_type, void* data)
 {
   // check for valid preamble, write preamble, then write data
   writeT0DTScaledPreamble();
-  std::cout << "after write preamble()" << std::endl;
   char buffer[FDF_ITEMNAME_LENGTH];
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "data", strlen("data"));
   long ndims = dims_.size();
   int* dims;
-  std::cout << "before memory allocation" << std::endl;
   // allocate memory for dimensions structure and populate from member
   // variable dims_
   dims = (int*) malloc(ndims * sizeof(int)); 
-  std::cout << "ndims: " << ndims << std::endl;
   for (int indx=0; indx<ndims; indx++)
     {
-      std::cout << "indx: " << indx << std::endl;
       dims[indx] = dims_[indx];
     }
-  std::cout << "after fill array" << std::endl;
-  //let's just check the result
-  for (int jndx=0; jndx<ndims; jndx++)
-    {
-      std::cout << "dims["  << jndx << "]: " << dims[jndx] << std::endl;
-    }
-  
   err_ = fdf_write_item(fp_, 1, buffer, ndims,
                         dims, fdf_double, data, err_);
 }
@@ -410,11 +391,9 @@ void FdfPP::readT0DT_Scaled(void* data)
   void* data_buffer;
   nitems = new long[1];
   err_ = fdf_seek_end( fp_, nitems, err_ );
-  std::cout << "readPreamble(): nitems: " << *nitems << std::endl;
   for (long item = 0; item < *nitems; item++)
     {
       seekItem(&item, name, &ndims, dims, &type, &nbytes);
-      std::cout << "nbytes: " << nbytes << std::endl;
       // allocate temporary c-style buffer
       data_buffer = malloc(nbytes);
       readData(nbytes, data_buffer);      

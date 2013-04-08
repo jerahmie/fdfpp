@@ -347,14 +347,14 @@ TEST_F(fdfppClassTest, fdfpp_read_write)
   wr_FdfPP.readT0DT_Scaled((void*)fdf_data);
   EXPECT_EQ(0, wr_FdfPP.fileType());
   EXPECT_STREQ("test of fdfpp: the CXX wrapper of the fdf C library",
-               wr_FdfPP.header().c_str());
-  cout << wr_FdfPP.header() << endl;
-  cout << "size of fdf values: " << fdf_type_nbytes(fdf_double)*1024 << endl;
+               wr_FdfPP.header().c_str())
+    << "--- KNOWN ISSUE ---: Some strings in header have been known to have extra characters on certain sytems.";
   EXPECT_DOUBLE_EQ(0.0, wr_FdfPP.zcv());
   EXPECT_DOUBLE_EQ(1.0, wr_FdfPP.vpc());
   EXPECT_DOUBLE_EQ(0.0, wr_FdfPP.t0());
   EXPECT_DOUBLE_EQ(0.0001, wr_FdfPP.dt());
-  EXPECT_STREQ("volts", wr_FdfPP.units().c_str());
+  EXPECT_STREQ("volts", wr_FdfPP.units().c_str())
+    << "--- KNOWN ISSUE ---: Some strings in header have been known to have extra characters on certain sytems.";
   // cycle through read fdf values and check against reference data
   for (int indx=0; indx < data_length; indx++)
     {
