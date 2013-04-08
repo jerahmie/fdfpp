@@ -258,8 +258,7 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
   for (int indx=0; indx < data_length; indx++)
     data[indx] = A * cos(2.0 * M_PI * f0 * dt_header_write * indx + phi);
   
-  
-  string fdf_file_name = "one_unittest_fdf.fdf";  
+    string fdf_file_name = "one_unittest_fdf.fdf";  
   FdfPP oneFdfPP;
   oneFdfPP.openWrite(fdf_file_name,0);
   EXPECT_NO_THROW(oneFdfPP.preamble( t0dt_scaled,
@@ -325,7 +324,6 @@ TEST_F(fdfppClassTest, fdfpp_assignment_operator)
   EXPECT_EQ(2048, two_dims[0]);
   EXPECT_EQ(16, twoFdfPP.nbits());
   EXPECT_STREQ(one_units.c_str(), twoFdfPP.units().c_str());
- 
 }
 
 TEST_F(fdfppClassTest, fdfpp_read_write)
@@ -346,7 +344,6 @@ TEST_F(fdfppClassTest, fdfpp_read_write)
   EXPECT_STREQ("volts", wr_FdfPP.units().c_str());
   wr_FdfPP.close();
 }
-
 
 int main(int argc, char* argv[])
 {

@@ -432,39 +432,32 @@ void FdfPP::readPreamble(void)
           std::stringstream header_ss;
           header_ss << (char*) data_buffer;
           header_ = header_ss.str();
-          // std::cout << "->> set header: " << header_ << std::endl;
         }
       else if (std::strcmp(name, "zcv") == 0)
         {
           zcv_ = *((double*) data_buffer);
-          // std::cout << "->> set zcv: " << zcv_ << std::endl;
         }
       else if (std::strcmp(name, "vpc") == 0)
         {
           vpc_ = *((double*) data_buffer);
-          // std::cout << "->> set vpc: " << vpc_ << std::endl;          
         }
       else if (std::strcmp(name, "t0") == 0)
         {
           t0_ = *((double*) data_buffer);
-          // std::cout << "->> set t0: " << t0_ <<  std::endl;
         }
       else if (std::strcmp(name, "dt") == 0)
         {
           dt_ = *((double*) data_buffer);
-          // std::cout << "->> set dt: " << dt_ << std::endl;          
         }      
       else if (std::strcmp(name, "nbits") == 0)
         {
           nbits_ = *((int*)data_buffer);
-          // std::cout << "->> set nbits: " << nbits_ << std::endl;          
         }
       else if (std::strcmp(name, "units") == 0)
         {
           std::stringstream units_ss;
           units_ss << (char*) data_buffer;
           units_ = units_ss.str();
-          // std::cout << "->> set units: " << units_ << std::endl;          
         }      
       else
         std::cout << "could not determine value" << std::endl;
