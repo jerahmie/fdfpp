@@ -35,10 +35,8 @@ protected:
 
     // open the file; delete if it exists
     ifstream test_file("unittest_fdf.fdf");
-    cout << "test_file.good(): " << test_file.good() << endl;
     if (test_file.good())
       {
-	cout << "found file." << endl;
 	file_exists = true;
 	test_file.close();
 	remove("unittest_fdf.fdf");

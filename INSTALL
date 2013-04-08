@@ -1,0 +1,22 @@
+INSTALL: Build and Installation Instructions for FDF/FDFPP libraries.
+
+== Prerequisites
+   * CMake 2.8 or higher
+   * C++ compiler
+     - Microsoft Visual Studio 2010
+     - gcc, g++ 4.0 or newer
+     - clang/llvm 3.2 or newer
+   * [Optional] Google testing framework, gtest-1.6.0 or higher.  Available
+     from https://code.google.com/p/googletest/
+
+== Building Linux/Mac OS X Command Line
+   cmake . -DGTEST_DIR='/path/to/gtest/'
+   make
+[Optional] ./fdfpp_unittest1
+
+== Building Windows Command Line
+   cmake . -DGTEST_DIR='C:\Path\to\Gtest'
+   msbuild fdfpp.sln -t:Build -p:Configuration=Release
+[Optional] Release\fdfpp_unittst1.exe 
+
+

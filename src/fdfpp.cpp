@@ -28,13 +28,11 @@ FdfPP::FdfPP()
   t0_ = 0.0;
   dt_ = 0.0;
   nbits_ = 32;
-  //  data_ = NULL;
 }
 
 FdfPP::~FdfPP()
 {
   // FdfPP destructor
-  //  free(data_);
 }
 
 // Copy Constructor
@@ -171,7 +169,7 @@ void FdfPP::units(const std::string &units)
 
 void FdfPP::zcv(double zcv)
 {
-  /// set the 'zero club voltage', which is just the offset 
+  /// set the 'zero crossing voltage', which is just the offset 
   zcv_ = zcv;
 }
 
@@ -231,50 +229,23 @@ void FdfPP::preamble(fdfpp_file_type ft, const std::string &header,
 
 
 // getters
-fdfpp_file_type FdfPP::fileType(void)
-{
-  return(fdfpp_file_type_);
-}
+fdfpp_file_type FdfPP::fileType(void) { return(fdfpp_file_type_); }
 
-std::string FdfPP::header(void) const
-{
-  return(header_);
-}
+std::string FdfPP::header(void) const {return(header_); }
 
-std::string FdfPP::units(void) const
-{
-  return(units_);
-}
+std::string FdfPP::units(void) const { return(units_); }
 
-double FdfPP::zcv(void)
-{
-  return(zcv_);
-}
+double FdfPP::zcv(void) { return(zcv_); }
 
-double FdfPP::vpc(void)
-{
-  return(vpc_);
-}
+double FdfPP::vpc(void) { return(vpc_); }
 
-double FdfPP::t0(void)
-{
-  return(t0_);
-}
+double FdfPP::t0(void) { return(t0_); }
 
-double FdfPP::dt(void)
-{
-  return(dt_);
-}
+double FdfPP::dt(void) { return(dt_); }
 
-int FdfPP::nbits(void)
-{
-  return(nbits_);
-}
+int FdfPP::nbits(void) { return(nbits_); }
 
-std::vector<int> FdfPP::dims(void) const
-{
-  return(dims_);
-}
+std::vector<int> FdfPP::dims(void) const { return(dims_); }
 
 
 void FdfPP::writeT0DTScaledPreamble(void)
@@ -468,6 +439,7 @@ void FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
 
 }
 //long FdfPP::writeItem(long append, const std::string &name, )
+
 void FdfPP::seekItem(long *item, char *name, long *ndims, int *dims,
                      long *type, long *nbytes)
 {

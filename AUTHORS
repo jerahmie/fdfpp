@@ -1,0 +1,4 @@
+Fdf was originally written by Paul Probert starting in 2003 as part of the DAQ system for the HSX Plasma Laboratory at the University of Wisconsin - Madison.
+
+Fdfpp is a C++ interface to the fdf C-libraries written by Jerahmie W. Radder early 2013.
+

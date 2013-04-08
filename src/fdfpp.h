@@ -75,7 +75,7 @@ class FdfPP
   void isLink(char*, long*);
 //  long dataLength(long, const int*, long);
 //  long readPreamble(char*, long*, int*, long*);  
-// long typeNBytes();
+//  long typeNBytes();
 //  long freadErr();
 //  long fwriteErr();
   void readT0DT_Scaled(void* data);
@@ -89,7 +89,6 @@ private:
   double zcv_, vpc_, t0_, dt_;
   int nbits_;
   std::vector<int> dims_;
-  //  void* data_; // pointer to fdf data
 };
 
 #endif // FDFPP_H_
