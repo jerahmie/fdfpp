@@ -295,9 +295,11 @@ void FdfPP::writeT0DTScaledPreamble(void)
     }
 
   char buffer[FDF_ITEMNAME_LENGTH];
+  std::cout << "FDF_ITEMNAME_LENGTH: " << FDF_ITEMNAME_LENGTH << std::endl;
+  std::cout  << "strlen(buffer): " << strlen(buffer) << std::endl;
   memset(&buffer, 0x0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, fdfname_str, strlen(fdfname_str));
-
+  std::cout << "strlen(fdfname_str): " << strlen(fdfname_str) << std::endl;
   // write the fdf file type item
   dim_header_item_name_length = strlen(filetype_str);
   pdim_header_item_name_length = &dim_header_item_name_length;
