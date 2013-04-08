@@ -290,10 +290,10 @@ void FdfPP::writeT0DTScaledPreamble(void)
   int *pdim_header_item_name_length;
 
   const char* fdfname_str = "filetype";
-  char * filetype_str;
+  char *filetype_str;
   if ( fdfpp_file_type_ == t0dt_scaled)
     {
-      filetype_str = "t0dt_scaled";
+      filetype_str = (char *)"t0dt_scaled";
     }
 
   char buffer[FDF_ITEMNAME_LENGTH];
@@ -311,18 +311,16 @@ void FdfPP::writeT0DTScaledPreamble(void)
                         fdf_char, (void*)filetype_str, err_);
   // write the header
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "header", strlen("header"));
+  memcpy(&buffer, (char *)"header", strlen((char *)"header"));
   dim_header_item_name_length = header_.length();
-  std::cout << "header_length: " << dim_header_item_name_length
-	    << " " << *pdim_header_item_name_length<< std::endl;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_char, (void*)header_.c_str(), err_);
-  std::cout << (void *)header_.c_str() << std::endl;
-  std::cout << header_.c_str() << std::endl;
+  std::cout << "strlen(\"header\") : " << strlen("header")
+	    << " " << strlen((char *)"header") << std::endl;
   // zcv
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "zcv", strlen("zcv"));
+  memcpy(&buffer, (char *)"zcv", strlen((char *)"zcv"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
@@ -330,7 +328,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
 
   // vpc
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "vpc", strlen("vpc"));
+  memcpy(&buffer, (void *)"vpc", strlen((char *)"vpc"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,

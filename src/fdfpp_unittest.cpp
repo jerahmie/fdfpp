@@ -30,7 +30,7 @@ protected:
     bool file_exists = false;
     // create the fdf file with our fdfpp C++ wrapper
     FdfPP myFdfPP;
-    myFdfPP.openWrite("unittest_fdf.fdf",0);
+    myFdfPP.openWrite((char *)"unittest_fdf.fdf",0);
     myFdfPP.close();
 
     // open the file; delete if it exists
