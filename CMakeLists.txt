@@ -174,8 +174,12 @@ add_library(fdf SHARED
 #			  SOVERSION "${GENERIC_LIB_SOVERSION}")
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_executable(fdfpp ${PROJECT_SOURCE_DIR}/fdfpp_main.cpp)
-target_link_libraries(fdfpp fdf)
+#add_executable(fdfpp ${PROJECT_SOURCE_DIR}/fdfpp_main.cpp)
+
+add_library(fdfpp                  ${PROJECT_SOURCE_DIR}/fdfpp.cpp
+                  ${PROJECT_SOURCE_DIR}/fdfpp.h
+            )     
+                  
 
 
 #############################################################
@@ -192,6 +196,7 @@ if( GTEST_FOUND )
     target_link_libraries( fdfpp_unittest1
                     ${GTEST_BOTH_LIBRARIES}
 		    fdf
+                    fdfpp
 		    ${CMAKE_THREAD_LIBS_INIT}
 		    )
 endif( GTEST_FOUND )
