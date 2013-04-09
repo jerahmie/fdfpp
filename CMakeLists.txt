@@ -7,7 +7,7 @@ project( fdfpp )
 
 # set project version number: 0.1 until it's 'useable'
 set( fdfpp_VERSION_MAJOR 0)
-set( fdfpp_VERSION_MINOR 1)
+set( fdfpp_VERSION_MINOR 9)
 
 set( WITH_SHARED_LIBS False )
 
