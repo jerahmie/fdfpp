@@ -170,15 +170,32 @@ add_library(fdf SHARED
 		${PROJECT_SOURCE_DIR}/fdf.c
 		${PROJECT_SOURCE_DIR}/fdf.h
 		)
+
+add_library(fdfStatic STATIC
+		${PROJECT_SOURCE_DIR}/fdf.c
+		${PROJECT_SOURCE_DIR}/fdf.h
+		)
+
+set_target_properties(fdfStatic PROPERTIES OUTPUT_NAME fdf)
+
 #set_target_properties(fdf PROPERTIES VERSION "${GENERIC_LIB_VERSION}"
 #			  SOVERSION "${GENERIC_LIB_SOVERSION}")
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR})
-#add_executable(fdfpp ${PROJECT_SOURCE_DIR}/fdfpp_main.cpp)
 
-add_library(fdfpp                  ${PROJECT_SOURCE_DIR}/fdfpp.cpp
-                  ${PROJECT_SOURCE_DIR}/fdfpp.h
-            )     
+add_library(fdfpp SHARED
+        ${PROJECT_SOURCE_DIR}/fdfpp.cpp
+        ${PROJECT_SOURCE_DIR}/fdfpp.h
+        ${PROJECT_SOURCE_DIR}/fdf.c
+        ${PROJECT_SOURCE_DIR}/fdf.h
+            )                 
+
+add_library(fdfppStatic STATIC
+        ${PROJECT_SOURCE_DIR}/fdfpp.cpp
+        ${PROJECT_SOURCE_DIR}/fdfpp.h
+            )
+
+set_target_properties(fdfppStatic PROPERTIES OUTPUT_NAME fdfpp)
                   
 
 
@@ -196,7 +213,7 @@ if( GTEST_FOUND )
     target_link_libraries( fdfpp_unittest1
                     ${GTEST_BOTH_LIBRARIES}
 		    fdf
-                    fdfpp
+                    fdfppStatic
 		    ${CMAKE_THREAD_LIBS_INIT}
 		    )
 endif( GTEST_FOUND )
