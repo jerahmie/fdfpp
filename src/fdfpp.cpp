@@ -371,7 +371,7 @@ void FdfPP::readT0DT_Scaled(void* data)
       // set appropriate member variable
       if (std::strcmp(name, "filetype") == 0)
         {
-
+          std::cout << "filetype: " << (char*)data_buffer << std::endl;
           if (std::strcmp((char *)data_buffer, "t0dt_scaled") == 0)
             {
               fdfpp_file_type_ = t0dt_scaled;
