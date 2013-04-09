@@ -25,9 +25,9 @@ set(fdfpp_HEADERS
 	${PROJECT_SOURCE_DIR}/fdfpp.h
 	)
 
-#############################################################
+#----------------------------------------------------------------------------
 ## fdfpp testing with GTest
-#############################################################
+#----------------------------------------------------------------------------
  set(fdfpp_unittest_SOURCES
 	${PROJECT_SOURCE_DIR}/fdfpp.cpp
         ${PROJECT_SOURCE_DIR}/fdfpp_unittest.cpp
@@ -38,9 +38,9 @@ set(fdfpp_HEADERS
  	${PROJECT_SOURCE_DIR}/fdfpp.h
  	)
 	
-#############################################################
+#----------------------------------------------------------------------------
 ## Microsoft Visual C++ flags
-#############################################################
+#----------------------------------------------------------------------------
 
 if(MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -139,9 +139,9 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   message(STATUS "CMAKE_SYSTEM_NAME " ${CMAKE_SYSTEM_NAME})
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
-############################################################
+#----------------------------------------------------------------------------
 ## set GTEST location for unit tests
-############################################################
+#----------------------------------------------------------------------------
 set(GTEST_ROOT ${GTEST_DIR})
 set(GTEST_MSVC_SEARCH "MT")
 message(STATUS "GTEST_ROOT:           " ${GTEST_ROOT})
@@ -162,9 +162,9 @@ if(BUILD_STATIC_LIBS)
 endif(BUILD_STATIC_LIBS)
 
 
-#############################################################
+#----------------------------------------------------------------------------
 ## Build fdfpp 
-#############################################################
+#----------------------------------------------------------------------------
 
 add_library(fdf SHARED
 		${PROJECT_SOURCE_DIR}/fdf.c
@@ -199,9 +199,9 @@ set_target_properties(fdfppStatic PROPERTIES OUTPUT_NAME fdfpp)
                   
 
 
-#############################################################
+#----------------------------------------------------------------------------
 ## Build fdfpp unit tests
-#############################################################
+#----------------------------------------------------------------------------
 message( STATUS "GTEST_FOUND: " ${GTEST_FOUND})
 include_directories(${GTEST_INCLUDE_DIRS})
 if( GTEST_FOUND )
@@ -218,4 +218,21 @@ if( GTEST_FOUND )
 		    )
 endif( GTEST_FOUND )
     
-		    
+# ----------------------------------------------------------------------------
+## Add files to CMake Install
+# ----------------------------------------------------------------------------
+message(STATUS "CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
+if (NOT FDFPP_NO_DEVELOPMENT)
+   INSTALL ( FILES ${fdfpp_HEADERS}
+             DESTINATION ${CMAKE_INSTALL_PREFIX}/include
+             COMPONENT headers
+   )
+   INSTALL (
+   
+
+   )
+endif (NOT FDFPP_NO_DEVELOPMENT)
+# ----------------------------------------------------------------------------
+## Add Targets to CMake Install
+# ----------------------------------------------------------------------------
+
