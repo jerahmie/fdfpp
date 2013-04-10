@@ -226,11 +226,15 @@ if (NOT FDFPP_NO_DEVELOPMENT)
    INSTALL ( FILES ${fdfpp_HEADERS}
              DESTINATION ${CMAKE_INSTALL_PREFIX}/include
              COMPONENT headers
-   )
-   INSTALL (
+             )
+   INSTALL ( TARGETS fdf fdfStatic fdfpp fdfppStatic
+             LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+             ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+             LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+             ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+             )
    
 
-   )
 endif (NOT FDFPP_NO_DEVELOPMENT)
 # ----------------------------------------------------------------------------
 ## Add Targets to CMake Install
