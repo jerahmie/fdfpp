@@ -7,7 +7,8 @@ project( fdfpp )
 
 # set project version number: 0.1 until it's 'useable'
 set( fdfpp_VERSION_MAJOR 0)
-set( fdfpp_VERSION_MINOR 9.1)
+set( fdfpp_VERSION_MINOR 9)
+set( fdfpp_VERSION_PATCH 1)
 
 set( WITH_SHARED_LIBS False )
 
@@ -237,6 +238,33 @@ if (NOT FDFPP_NO_DEVELOPMENT)
 
 endif (NOT FDFPP_NO_DEVELOPMENT)
 # ----------------------------------------------------------------------------
-## Add Targets to CMake Install
+## CMake variables to configure CPack
 # ----------------------------------------------------------------------------
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
+        "FDF/FDFPP: fast data format library and C++ interface")
+set(CPACK_PACKAGE_VENDOR "University of Wisconsin-Madison")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_VERSION_MAJOR ${fdfpp_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${fdfpp_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${fdfpp_VERSION_PATCH})
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "CMake ${CMake_VERSION_MAGOR}.${CMake_VERSION_MINOR}")
+if (WIN32 AND NOT UNIX)
+   # There is a bug in NSI thst does not handle full unix paths properly.
+   # Make sure there is at least one set of four (4) backslashes.
+   # set(CPACK_PACKAGE_ICON
+   #  "${Cmake_SOURCE_DIR}/Uilities/Release\\\\InstallIcon.bmp")
+   # set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\MyExecutable.exe")
+   # set(CPACK_NSIS_DISPLAY_NAME
+   #"${CPACK_PACKAGE_INSTALL_DIRECTORY} FDFPP: C++ interface to FDF")
+   # set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.somesite.org")
+   # set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.someothersite.org")
+   set(CPACK_NSIS_CONTACT "jerahmie@uwalumni.com")
+   set(CPACK_NSIS_MODIFY_PATH ON)
+else (WIN32 AND NOT UNIX)
+   #  set(CPACK_STRIP_FILES "bin/MyExecutable")
+   # set(CPACK_SOURCE_STRIP_FILES "")
+endif (WIN32 AND NOT UNIX)
+# set(CPACK_PACKAGE_EXECUTABLES "FDFPPEXE" "FDFPP EXE")
+include(CPack)
 
