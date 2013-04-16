@@ -220,38 +220,38 @@ endif( GTEST_FOUND )
 # ----------------------------------------------------------------------------
 message(STATUS "CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
 if (NOT FDFPP_NO_DEVELOPMENT)
-   INSTALL ( FILES ${fdfpp_HEADERS}
-             DESTINATION ./include
-             COMPONENT headers
-             )
-   INSTALL ( TARGETS fdfStatic fdfppStatic
-             ARCHIVE DESTINATION ./lib
-	     COMPONENT dev_libraries
-             )
+   if (WIN32 AND NOT UNIX)
+     INSTALL ( FILES ${fdfpp_HEADERS}
+               DESTINATION ./include
+               COMPONENT headers
+               )
+     INSTALL ( TARGETS fdfStatic fdfppStatic
+               ARCHIVE DESTINATION ./lib
+               COMPONENT dev_libraries
+               )
    
-   INSTALL ( TARGETS fdf fdfpp
-   	   DESTINATION bin
-	   RUNTIME DESTINATION bin
-	   COMPONENT runtime_libraries
-	   )
-	   
-endif (NOT FDFPP_NO_DEVELOPMENT)
-# ----------------------------------------------------------------------------
-## CMake variables to configure CPack
-# ----------------------------------------------------------------------------
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
-        "FDF/FDFPP: fast data format library and C++ interface")
-set(CPACK_PACKAGE_VENDOR "University of Wisconsin-Madison")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-set(CPACK_PACKAGE_VERSION_MAJOR ${fdfpp_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${fdfpp_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${fdfpp_VERSION_PATCH})
-# set(CPACK_PACKAGE_INSTALL_DIRECTORY "fdfpp-${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "fdfpp")
-#set(CPACK_PACKAGE_EXECUTABLES "" "" )
+     INSTALL ( TARGETS fdf fdfpp
+               DESTINATION bin
+               RUNTIME DESTINATION bin
+               COMPONENT runtime_libraries
+               )
+  
+  else (WIN32 AND NOT UNIX)
+     INSTALL ( FILES ${fdfpp_HEADERS}
+               DESTINATION ./include
+               COMPONENT headers
+               )
+     INSTALL ( TARGETS fdf fdfpp fdfStatic fdfppStatic
+               ARCHIVE DESTINATION ./lib
+               ARCHIVE DESTINATION ./lib
+               ARCHIVE DESTINATION ./lib
+               ARCHIVE DESTINATION ./lib
+               COMPONENT dev_libraries
+               )
 
-			       
+  endif (WIN32 AND NOT UNIX)
+endif (NOT FDFPP_NO_DEVELOPMENT)
+		       
 if (WIN32 AND NOT UNIX)
    # There is a bug in NSI thst does not handle full unix paths properly.
    # Make sure there is at least one set of four (4) backslashes.
@@ -264,6 +264,21 @@ if (WIN32 AND NOT UNIX)
    # set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.someothersite.org")
    set(CPACK_NSIS_CONTACT "jerahmie@uwalumni.com")
    set(CPACK_NSIS_MODIFY_PATH ON)
+   # --------------------------------------------------------------------------	
+   ## CMake variables to configure CPack
+   # --------------------------------------------------------------------------
+   set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
+	"FDF/FDFPP: fast data format library and C++ interface")
+   set(CPACK_PACKAGE_VENDOR "University of Wisconsin-Madison")
+   set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
+   set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+   set(CPACK_PACKAGE_VERSION_MAJOR ${fdfpp_VERSION_MAJOR})
+   set(CPACK_PACKAGE_VERSION_MINOR ${fdfpp_VERSION_MINOR})
+   set(CPACK_PACKAGE_VERSION_PATCH ${fdfpp_VERSION_PATCH})
+   # set(CPACK_PACKAGE_INSTALL_DIRECTORY "fdfpp-${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
+   set(CPACK_PACKAGE_INSTALL_DIRECTORY "fdfpp")
+   #set(CPACK_PACKAGE_EXECUTABLES "" "" )
+   
 else (WIN32 AND NOT UNIX)
    #  set(CPACK_STRIP_FILES "bin/MyExecutable")
    # set(CPACK_SOURCE_STRIP_FILES "")
