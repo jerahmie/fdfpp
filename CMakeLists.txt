@@ -238,14 +238,14 @@ if (NOT FDFPP_NO_DEVELOPMENT)
   
   else (WIN32 AND NOT UNIX)
      INSTALL ( FILES ${fdfpp_HEADERS}
-               DESTINATION ./include
+               DESTINATION ${CMAKE_INSTALL_PREFIX}/include
                COMPONENT headers
                )
-     INSTALL ( TARGETS fdf fdfpp fdfStatic fdfppStatic
-               ARCHIVE DESTINATION ./lib
-               ARCHIVE DESTINATION ./lib
-               ARCHIVE DESTINATION ./lib
-               ARCHIVE DESTINATION ./lib
+     INSTALL ( TARGETS fdf fdfStatic fdfpp fdfppStatic
+               LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+               ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+               LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+               ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
                COMPONENT dev_libraries
                )
 
