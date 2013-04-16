@@ -10,7 +10,7 @@ set( fdfpp_VERSION_MAJOR 0)
 set( fdfpp_VERSION_MINOR 9)
 set( fdfpp_VERSION_PATCH 1)
 
-set( WITH_SHARED_LIBS False )
+#set( WITH_SHARED_LIBS False )
 
 message(STATUS "Cmake detected the following system: " ${CMAKE_SYSTEM_NAME})
 
@@ -100,14 +100,12 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
        set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2")
        set(CMAKE_CXX_FLAGS_MINSIZEREL "/MT /O2")
        set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MT /O2")
-       set(MALIBU_BOARD_LIBRARY_DIR C:/Innovative/Lib/VC10)       
      elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
        set(CMAKE_CXX_FLAGS "/nologo /W3 /EHsc /Gy")
        set(CMAKE_CXX_FLAGS_DEBUG "/MTd /Z7 /Od")
        set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2")
        set(CMAKE_CXX_FLAGS_MINSIZEREL "/MT /O2")
        set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MT /O2")
-       set(MALIBU_BOARD_LIBRARY_DIR C:/Innovative/Lib/VC9)              
 #       set(MSC_MFC_CXX_INCLUDE_DIR
 #          "C:/Program Files/Microsoft Platform SDK/Include/mfc")       
      endif(CMAKE_GENERATOR STREQUAL "Visual Studio 10")
@@ -118,7 +116,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
        set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2")
        set(CMAKE_CXX_FLAGS_MINSIZEREL "/MD /O2")
        set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MD /O2")
-       set(MALIBU_BOARD_LIBRARY_DIR C:/Innovative/Lib/VC10)       
      elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
        set(CMAKE_CXX_FLAGS "/nologo /W3 /c /clr /EHa /Gy")
        set(CMAKE_CXX_FLAGS_DEBUG "/MDd /Z7 /Od")
@@ -126,7 +123,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
        set(CMAKE_CXX_FLAGS_MINSIZEREL "/MD /O2")
        set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MD /O2")
        set(CMAKE_EXE_LINKER_FLAGS "/NODEFAULTLIB:MSVCRT /NODEFAULTLIB:LIBCMT")
-       set(MALIBU_BOARD_LIBRARY_DIR C:/Innovative/Lib/VC9)       
      endif(CMAKE_GENERATOR STREQUAL "Visual Studio 10")
     endif(NOT WITH_SHARED_LIBS)
   endif(CMAKE_CXX_COMPILER MATCHES cl)
@@ -225,17 +221,20 @@ endif( GTEST_FOUND )
 message(STATUS "CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
 if (NOT FDFPP_NO_DEVELOPMENT)
    INSTALL ( FILES ${fdfpp_HEADERS}
-             DESTINATION ${CMAKE_INSTALL_PREFIX}/include
+             DESTINATION ./include
              COMPONENT headers
              )
-   INSTALL ( TARGETS fdf fdfStatic fdfpp fdfppStatic
-             LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-             ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-             LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-             ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+   INSTALL ( TARGETS fdfStatic fdfppStatic
+             ARCHIVE DESTINATION ./lib
+	     COMPONENT dev_libraries
              )
    
-
+   INSTALL ( TARGETS fdf fdfpp
+   	   DESTINATION bin
+	   RUNTIME DESTINATION bin
+	   COMPONENT runtime_libraries
+	   )
+	   
 endif (NOT FDFPP_NO_DEVELOPMENT)
 # ----------------------------------------------------------------------------
 ## CMake variables to configure CPack
@@ -248,7 +247,11 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_PACKAGE_VERSION_MAJOR ${fdfpp_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${fdfpp_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${fdfpp_VERSION_PATCH})
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "CMake ${CMake_VERSION_MAGOR}.${CMake_VERSION_MINOR}")
+# set(CPACK_PACKAGE_INSTALL_DIRECTORY "fdfpp-${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "fdfpp")
+#set(CPACK_PACKAGE_EXECUTABLES "" "" )
+
+			       
 if (WIN32 AND NOT UNIX)
    # There is a bug in NSI thst does not handle full unix paths properly.
    # Make sure there is at least one set of four (4) backslashes.
@@ -267,4 +270,10 @@ else (WIN32 AND NOT UNIX)
 endif (WIN32 AND NOT UNIX)
 # set(CPACK_PACKAGE_EXECUTABLES "FDFPPEXE" "FDFPP EXE")
 include(CPack)
-
+#cpack_add_component_group(devel DISPLAY_NAME "FDFPP development files"
+#				EXPANDED )
+#cpack_add_component(fdfpp_devel DISPLAY_NAME
+#				"FDFPP Development Libraries and headers"
+#			       DESCRIPTION
+#			       "FDFPP C/C++ Libraries Development Libraries and headers"
+#			       GROUP devel )
