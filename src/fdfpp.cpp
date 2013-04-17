@@ -13,6 +13,8 @@
 #include<vector>
 #include "fdfpp.h"
 
+namespace fdfpp
+{
 
 FdfPP::FdfPP()
 {
@@ -480,3 +482,5 @@ void FdfPP::isLink(char *fname, long *islink)
 // {
 // 
 // }
+  
+} /* namespace fdfpp */

@@ -17,7 +17,8 @@
 #include<vector>
 #include "fdf.h"
 
-
+namespace fdfpp
+{
 typedef enum fdfpp_file_type_tag{ t0dt_scaled, cp_info } fdfpp_file_type;
 
 class FdfPP
@@ -90,6 +91,6 @@ private:
   int nbits_;
   std::vector<int> dims_;
 };
-
+}
 #endif // FDFPP_H_
 

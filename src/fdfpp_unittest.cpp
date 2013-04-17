@@ -19,6 +19,7 @@
 
 
 using namespace std;
+using namespace fdfpp;
 
 // fdfpp test fixture
 class fdfppTest : public ::testing::Test{
