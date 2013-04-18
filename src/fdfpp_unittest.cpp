@@ -9,12 +9,15 @@
 #define DATA_POINTS 1024
 #define _USE_MATH_DEFINES
 
+#include "fdfpp.h"
+#include "gtest/gtest.h"
 #include <cstdio>
 #include <iostream>
 #include <cmath>
 #include <fstream>
-#include "fdfpp.h"
-#include "gtest/gtest.h"
+#include <vector>
+
+
 
 
 
@@ -46,6 +49,14 @@ protected:
     return(file_exists);
   }
 
+  bool fdfppSTLTest()
+  {
+    // create a STL array composed of FdfPP objects
+    vector<FdfPP> fdfpp_list;
+    
+    return(false);
+  }
+  
 
 //  bool fdfppWriteReadFloat(void)
 //  {
@@ -362,6 +373,11 @@ TEST_F(fdfppClassTest, fdfpp_read_write)
   wr_FdfPP.close();
 }
 
+TEST_F(fdfppClassTest, fdfpp_test_vector)
+{
+  // test the ability to use FdfPP objects in a STL data container
+  EXPECT_TRUE(fdfppSTLTest());
+}
 int main(int argc, char* argv[])
 {
   ::testing::InitGoogleTest(&argc, argv);

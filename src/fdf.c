@@ -1,12 +1,13 @@
-// This file is part of the DAQ data acquisition system of the HSX Stellarator
-// Laboratory at the University of Wisconsin - Madison. This system was developed
-// by Paul Probert, starting in about 2003. See the files in the docs subdirectory
-// for some help. This work was supported by the US Taxpayers through the
-// US Department of Energy under grant DE-FG02-93ER54222. It is freely available
-// for any use. There is no warranty that this software is fit for any purpose.
-// Use at your own risk. Please report bugs to pprobert@wisc.edu.
+/* This file is part of the DAQ data acquisition system of the HSX Stellarator
+ *  Laboratory at the University of Wisconsin - Madison. This system was developed
+ * by Paul Probert, starting in about 2003. See the files in the docs subdirectory
+ * for some help. This work was supported by the US Taxpayers through the
+ * US Department of Energy under grant DE-FG02-93ER54222. It is freely available
+ * for any use. There is no warranty that this software is fit for any purpose.
+ * Use at your own risk. Please report bugs to pprobert@wisc.edu.
+ */
 #if defined(_MSC_VER)
-  #define _WIN32_WINNT 0X0500
+/*  #define _WIN32_WINNT 0X0500 */
   #include <windows.h>
 #else
   #define PREAMBLE(X)

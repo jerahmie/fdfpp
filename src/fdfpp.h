@@ -7,7 +7,7 @@
 #define FDFPP_H_
 
 #if defined(_MSC_VER)
-  #define _WIN32_WINNT 0X0500
+//  #define _WIN32_WINNT 0X0500
   #include <Windows.h>
 #else
   #define PREAMBLE(X)
@@ -19,6 +19,7 @@
 
 namespace fdfpp
 {
+
 typedef enum fdfpp_file_type_tag{ t0dt_scaled, cp_info } fdfpp_file_type;
 
 class FdfPP
