@@ -78,6 +78,7 @@ FdfPP::FdfPP(fdfpp_file_type ft, const std::string &header, double zcv,
              double vpc, double t0, double dt, int nbits,
              const std::string &units, const std::vector<int> &dims)
 {
+  err_ = 0;
   fdfpp_file_type_ = ft;
   header_ = header;
   zcv_ = zcv;
@@ -86,7 +87,7 @@ FdfPP::FdfPP(fdfpp_file_type ft, const std::string &header, double zcv,
   dt_ = dt;
   nbits_ = nbits;
   units_ = units;
-  dims_ = dims;  
+  dims_ = dims;
 }
 
   
@@ -131,12 +132,14 @@ void FdfPP::close()
   fdf_close(fp_);
 }
 
-long FdfPP::readData(long nbytes, void *data)
+void FdfPP::readData(long nbytes, void *data)
 {
   /// read data from our fdf file
-  long fdf_data_read_status = fdf_read_data(fp_, nbytes, data, err_);
-  return(fdf_data_read_status);
-  
+  err_ = fdf_read_data(fp_, nbytes, data, err_);
+  if (err_ != 0)
+    {
+      throw err_;
+    }
 }
 
 //long FdfPP::seekEnd(long *nitems)
@@ -276,15 +279,29 @@ void FdfPP::writeT0DTScaledPreamble(void)
   dim_header_item_name_length = strlen(filetype_str);
   pdim_header_item_name_length = &dim_header_item_name_length;
   err_ = fdf_write_item(fp_, 0, buffer, 1,
-                        pdim_header_item_name_length,
-                        fdf_char, (void*)filetype_str, err_);
+			pdim_header_item_name_length,
+			fdf_char, (void*)filetype_str, err_);
+  //  if (err_ != 0) throw err_;
+  if (err_ != 0)
+    {
+      std::cout << "fdf_type: " << fdfpp_file_type_ << std::endl;
+      std::cout << "err_: " << err_ << std::endl;      
+      throw err_;
+    }
   // write the header
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, (char *)"header", strlen((char *)"header"));
   dim_header_item_name_length = header_.length();
   err_ = fdf_write_item(fp_, 1, buffer, 1,
-                        pdim_header_item_name_length,
-                        fdf_char, (void*)header_.c_str(), err_);
+			pdim_header_item_name_length,
+			fdf_char, (void*)header_.c_str(), err_);
+  //  if (err_ != 0) throw err_;
+  if (err_ != 0)
+    {
+      std::cout << "header: " << err_ << std::endl;
+      throw "header";  
+    }
+  
   // zcv
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, (char *)"zcv", strlen((char *)"zcv"));
@@ -292,28 +309,53 @@ void FdfPP::writeT0DTScaledPreamble(void)
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_double, (void*)&zcv_, err_);
-
+  //  if (err_ != 0) throw err_;
+  if (err_ != 0)
+    {
+      std::cout << "zcv: " << err_ << std::endl;
+      throw "zcv";
+    }
+  
   // vpc
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, (void *)"vpc", strlen((char *)"vpc"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
-                        fdf_double, (void*)&vpc_, err_);  
+                        fdf_double, (void*)&vpc_, err_);
+  //  if (err_ != 0) throw err_;
+  if (err_ != 0)
+    {
+      std::cout << "vpc: " << err_ << std::endl;
+      throw "vpc";
+    }
   // t0
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "t0", strlen("t0"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
-                        fdf_double, (void*)&t0_, err_);    
+                        fdf_double, (void*)&t0_, err_);
+  //  if (err_ != 0) throw err_;
+  if (err_ != 0)
+    {
+      std::cout << "t0: " << err_ << std::endl;
+      throw "t0";
+    }
+  
   // dt
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "dt", strlen("dt"));
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
-                        fdf_double, (void*)&dt_, err_);      
+                        fdf_double, (void*)&dt_, err_);
+  // if (err_ != 0) throw err_;
+  if (err_ != 0)
+    {
+      std::cout << "dt: " << err_ << std::endl;
+      throw "dt";
+    }
   // nbits
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
   memcpy(&buffer, "nbits", strlen("nbits"));
@@ -321,6 +363,12 @@ void FdfPP::writeT0DTScaledPreamble(void)
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
                         fdf_i32, (void*)&nbits_, err_);      
+  //  if (err_ != 0) throw err_;
+  if (err_ != 0)
+    {
+      std::cout << "nbits: " << err_ << std::endl;
+      throw "nbits";  
+    }
   
   // units
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
@@ -328,7 +376,13 @@ void FdfPP::writeT0DTScaledPreamble(void)
   dim_header_item_name_length = units_.length();
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
-                        fdf_char, (void*)units_.c_str(), err_);  
+                        fdf_char, (void*)units_.c_str(), err_);
+  if (err_ != 0)
+    {
+      std::cout << "units: " << err_ << std::endl;
+      throw err_;
+    }
+  //if (err_ != 0) throw "units";
 }
 
 void FdfPP::writeT0DTScaledData(long fdf_type, void* data)
@@ -349,6 +403,12 @@ void FdfPP::writeT0DTScaledData(long fdf_type, void* data)
     }
   err_ = fdf_write_item(fp_, 1, buffer, ndims,
                         dims, fdf_double, data, err_);
+
+  if (err_ != 0)
+    {
+      std::cout << "data: " << err_ << std::endl;
+      throw err_;
+    }
 }
 
 void FdfPP::readT0DT_Scaled(void* data)
@@ -364,6 +424,7 @@ void FdfPP::readT0DT_Scaled(void* data)
   void* data_buffer;
   nitems = new long[1];
   err_ = fdf_seek_end( fp_, nitems, err_ );
+  if (err_ != 0) throw err_;
   for (long item = 0; item < *nitems; item++)
     {
       seekItem(&item, name, &ndims, dims, &type, &nbytes);
@@ -438,7 +499,8 @@ void FdfPP::writeItem(long append, char* name, long ndims, const int *dims,
 {
   err_ = fdf_write_item(fp_, append, name,
                  ndims, dims, type, data, err_);
-
+  //  if (err_ != 0) throw err_;
+  if (err_ != 0) throw "writeItem";
 }
 //long FdfPP::writeItem(long append, const std::string &name, )
 
@@ -447,11 +509,13 @@ void FdfPP::seekItem(long *item, char *name, long *ndims, int *dims,
 {
   err_ = fdf_seek_item(fp_, item, name,
                        ndims, dims, type, nbytes,err_);
+  if (err_ != 0) throw err_;
 }
 
 void FdfPP::isLink(char *fname, long *islink)
 {
   err_ = fdf_is_link(fname, islink);
+  if (err_ != 0) throw err_;
 }
 
 //long FdfPP::dataLength(long ndims, const int *dims, long type)

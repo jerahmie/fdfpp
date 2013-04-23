@@ -28,9 +28,10 @@ class FdfPP
   FdfPP();
   FdfPP(const FdfPP &other);                  // copy constructor
   FdfPP& operator=(const FdfPP& other);       // assignment operator
-  FdfPP(fdfpp_file_type, const std::string &header, double,
-               double, double, double, int, const std::string &units,
-               const std::vector<int> &dims); // constructor with init
+  FdfPP(fdfpp_file_type ft, const std::string &header, double zcv,
+	double vpc, double t0, double dt, int nbits,
+	const std::string &units,
+	const std::vector<int> &dims); // constructor with init
   virtual ~FdfPP();
 
   void open(char *fname);
@@ -40,7 +41,7 @@ class FdfPP
   void close();
   void openWrite(char* fname, long append);
   void openWrite(const std::string &fname, long append);
-  long readData(long, void*);
+  void readData(long, void*);
 
   // setters
   void fileType(fdfpp_file_type);

@@ -17,10 +17,6 @@
 #include <fstream>
 #include <vector>
 
-
-
-
-
 using namespace std;
 using namespace fdfpp;
 
@@ -49,12 +45,61 @@ protected:
     return(file_exists);
   }
 
-  bool fdfppSTLTest()
+void fdfppSTLTest(const int number_files)
   {
     // create a STL array composed of FdfPP objects
-    vector<FdfPP> fdfpp_list;
+    int nbits = 64;
+    const int data_length = 1024;
+    //    const int number_files = 8;
+    long append_yes = 1;
     
-    return(false);
+    vector<FdfPP*> list;
+    vector<FdfPP*>::iterator list_iterator;
+    vector<int> dims;
+    dims.push_back(data_length);
+    string file_name_prefix = "stl_file";
+    string file_name_postfix = ".fdf";
+    ostringstream indx_ss;
+
+    double dt = 0.0001;
+    double A = 1.0;
+    double phi = 0.0;
+    double f0 = 50.0;  // 50 Hz
+    double data[data_length];
+ 
+    for (int indx = 0; indx < number_files; indx++)
+      {
+	indx_ss.str(std::string());
+	indx_ss << indx;
+	// google test framework should handle fee memory ops
+	list.push_back(new FdfPP(t0dt_scaled,
+				 file_name_prefix
+				 + indx_ss.str()
+				 + file_name_postfix,
+				 0.0, 1.0, 0.0, dt, nbits,
+				 (char *)"volts", dims));
+      }
+    
+
+    int loop_count = 0;
+    for (list_iterator = list.begin();
+	 list_iterator != list.end();
+	 list_iterator++)
+      {
+	for (int indx=0; indx < data_length-1; indx++)
+	  {
+	    data[indx] = A * cos(2.0 * (double(loop_count)/10.0 + 1.0)
+				 * M_PI * f0 * dt * double(indx) + phi);
+	  }
+	indx_ss.str(std::string());
+	indx_ss << loop_count;
+	(*list_iterator)->openWrite(file_name_prefix
+				  + indx_ss.str()
+				  + file_name_postfix,0);
+	(*list_iterator)->writeT0DTScaledData(append_yes, (void*)data);
+	(*list_iterator)->close();
+	loop_count++;
+      }
   }
   
 
@@ -268,7 +313,7 @@ TEST_F(fdfppClassTest, fdfpp_header_write)
   for (int indx=0; indx < data_length; indx++)
     data[indx] = A * cos(2.0 * M_PI * f0 * dt_header_write * indx + phi);
   
-    string fdf_file_name = "one_unittest_fdf.fdf";  
+  string fdf_file_name = "one_unittest_fdf.fdf";  
   FdfPP oneFdfPP;
   oneFdfPP.openWrite(fdf_file_name,0);
   EXPECT_NO_THROW(oneFdfPP.preamble( t0dt_scaled,
@@ -373,11 +418,46 @@ TEST_F(fdfppClassTest, fdfpp_read_write)
   wr_FdfPP.close();
 }
 
-TEST_F(fdfppClassTest, fdfpp_test_vector)
+TEST_F(fdfppClassTest, fdfpp_test_stlvector)
 {
   // test the ability to use FdfPP objects in a STL data container
-  EXPECT_TRUE(fdfppSTLTest());
+  // write 8 files to the file system
+  int nbits = 64;
+  const int data_length = 1024;
+  const int num_files = 32;
+  double dt = 0.0001;
+  double A = 1.0;
+  double phi = 0.0;
+  double f0 = 50.0;  // 50 Hz
+  double datum;
+  //  double data[data_length];
+  double fdf_data[data_length];
+  string file_name_prefix = "stl_file";
+  string file_name_postfix = ".fdf";
+  ostringstream indx_ss;
+  FdfPP wr_FdfPP;
+  
+  EXPECT_NO_THROW(fdfppSTLTest(num_files));
+  
+  // read generated files and compare to same data loop in fdfppSTLTest(...)
+  for (int loop_count = 0; loop_count < num_files; loop_count++)
+    {
+      // read current file
+      indx_ss.str(std::string());
+      indx_ss << loop_count;
+      wr_FdfPP.open(file_name_prefix + indx_ss.str() + file_name_postfix);
+      wr_FdfPP.readT0DT_Scaled((void*)fdf_data);
+      wr_FdfPP.close();
+      for (int indx=0; indx < data_length-1; indx++)
+	{
+	  datum = A * cos(2.0 * (double(loop_count)/10.0 + 1.0)
+			       * M_PI * f0 * dt * double(indx) + phi);
+	  EXPECT_DOUBLE_EQ(datum, fdf_data[indx]);
+	}
+      
+    }
 }
+
 int main(int argc, char* argv[])
 {
   ::testing::InitGoogleTest(&argc, argv);
