@@ -424,7 +424,7 @@ TEST_F(fdfppClassTest, fdfpp_test_stlvector)
   // write 8 files to the file system
   int nbits = 64;
   const int data_length = 1024;
-  const int num_files = 32;
+  const int num_files = 22;
   double dt = 0.0001;
   double A = 1.0;
   double phi = 0.0;
