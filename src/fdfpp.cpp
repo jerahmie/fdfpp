@@ -290,7 +290,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
     }
   // write the header
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, (char *)"header", strlen((char *)"header"));
+  memcpy(&buffer, (char *)"header", strlen((char *)"header")+1);
   dim_header_item_name_length = header_.length();
   err_ = fdf_write_item(fp_, 1, buffer, 1,
 			pdim_header_item_name_length,
@@ -304,7 +304,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
   
   // zcv
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, (char *)"zcv", strlen((char *)"zcv"));
+  memcpy(&buffer, (char *)"zcv", strlen((char *)"zcv")+1);
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
@@ -318,7 +318,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
   
   // vpc
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, (void *)"vpc", strlen((char *)"vpc"));
+  memcpy(&buffer, (void *)"vpc", strlen((char *)"vpc")+1);
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
@@ -331,7 +331,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
     }
   // t0
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "t0", strlen("t0"));
+  memcpy(&buffer, "t0", strlen("t0")+1);
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
@@ -345,7 +345,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
   
   // dt
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "dt", strlen("dt"));
+  memcpy(&buffer, "dt", strlen("dt")+1);
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
@@ -358,7 +358,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
     }
   // nbits
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "nbits", strlen("nbits"));
+  memcpy(&buffer, "nbits", strlen("nbits")+1);
   dim_header_item_name_length = 1;
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
@@ -372,7 +372,7 @@ void FdfPP::writeT0DTScaledPreamble(void)
   
   // units
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "units", strlen("units"));
+  memcpy(&buffer, "units", strlen("units")+1);
   dim_header_item_name_length = units_.length();
   err_ = fdf_write_item(fp_, 1, buffer, 1,
                         pdim_header_item_name_length,
@@ -391,7 +391,7 @@ void FdfPP::writeT0DTScaledData(long fdf_type, void* data)
   writeT0DTScaledPreamble();
   char buffer[FDF_ITEMNAME_LENGTH];
   memset(&buffer, 0, FDF_ITEMNAME_LENGTH);
-  memcpy(&buffer, "data", strlen("data"));
+  memcpy(&buffer, "data", strlen("data")+1);
   long ndims = dims_.size();
   int* dims;
   // allocate memory for dimensions structure and populate from member
