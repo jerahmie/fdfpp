@@ -18,7 +18,7 @@ if (sys.platform == 'linux2' or sys.platform == 'linux3') :
              'src/fdfpp.cpp'],
     libraries=['fdf','fdfpp'],
     extra_compile_args = ['-O2' ],
-    extra_link_args = '-shard'])
+    extra_link_args = ['-shared'])
 
 setup (name = 'fdfppPackage',
        version = '0.1',
