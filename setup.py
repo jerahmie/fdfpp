@@ -7,7 +7,7 @@ from distutils.core import setup, Extension
 import sys
 
 if (sys.platform == 'linux2' or sys.platform == 'linux3') :
-    fdfpp_module = Extension('fdfpp',
+    fdfpp_module = Extension('_fdfpp',
     define_macros = [('MAJOR_VERSION', '0'),
                      ('MINOR_VERSION', '1')],
     include_dirs = ['/usr/local/include',
@@ -20,7 +20,7 @@ if (sys.platform == 'linux2' or sys.platform == 'linux3') :
     extra_compile_args = ['-O2' ],
     extra_link_args = ['-shared'])
 
-setup (name = 'fdfppPackage',
+setup (name = 'fdfpp',
        version = '0.1',
        description = 'Fast data format python module',
        author = 'Jerahmie W. Radder',
