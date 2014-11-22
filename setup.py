@@ -7,7 +7,7 @@ from distutils.core import setup, Extension
 import sys
 
 if (sys.platform == 'linux2' or sys.platform == 'linux3') :
-    fdfpp_module = Extension('_fdfpp',
+    fdfpp_module = Extension('fdfpp',
     define_macros = [('MAJOR_VERSION', '0'),
                      ('MINOR_VERSION', '1')],
     include_dirs = ['/usr/local/include',
